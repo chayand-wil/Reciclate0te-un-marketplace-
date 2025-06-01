@@ -5,21 +5,40 @@ import AdminLayout from '../layout/AdminLayout.vue'
 import AdminView from '../views/AdminView.vue'
 import AyudanteView from '../views/AyudanteView.vue'
 import RandomView from '../views/RandomView.vue'
-import OtraView from '../views/OtraView.vue'
+import RegisterView from '@/views/RegisterView.vue'
+import VisitorView from '@/views/VisitorView.vue'
+import IndexLayout from '@/layout/indexLayout.vue'
 
 
 
 const routes = [
   // Login   
+      {
+        path: '/recicla0te.com/login',
+        name: 'login',
+        component: LoginView
+      },
+      {
+        path: '/recicla0te.com/register',
+        name: 'register',
+        component: RegisterView
+      },
+      
+
   {
-    path: '/',
-    name: 'login',
-    component: LoginView
+    path: '/recicla0te.com',
+    component: IndexLayout,
+    children: [
+      { path: '', name: 'visitor', component: VisitorView },
+      { path: ':pathMatch(.*)*', redirect: { name: 'visitor' } },
+
+    ]
+
   },
 
   // Admin con layout
 {
-  path: '/admin',
+  path: '/recicla0te.com/admin',
   component: AdminLayout,
   
   children: [
@@ -27,16 +46,28 @@ const routes = [
     { path: 'usuarios', name: 'usuarios', component: AdminView },
     { path: 'reportes', name: 'reportes', component: AdminView },
     { path: 'rand', name: 'random', component: RandomView },
-    { path: 'otra', name: 'otra', component: OtraView },
+    { path: ':pathMatch(.*)*', redirect: { name: 'admin' } },
   ]
 },
 
-  // Ayudante  
-  {
-    path: '/ayudante',
-    name: 'ayudante',
-    component: AyudanteView
-  }
+// Ayudante  
+{
+  path: '/recicla0te.com/ayudante',
+  name: 'ayudante',
+  component: AyudanteView,
+  children: [
+    { path: ':pathMatch(.*)*', redirect: { name: 'ayudante' } },
+
+  ]
+},
+{
+  path: '/:pathMatch(.*)*',
+  name: 'not-found',
+  redirect: { name: 'visitor' }
+}
+
+
+
 ]
 
 
@@ -55,16 +86,33 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token')
   const role = localStorage.getItem('role')
 
-  // Si el usuario ya está logueado y trata de ir al login, redirigir según su rol
-  if (token && to.name === 'login') {
-    if (role === 'admin') return next({ name: 'admin' })
-    if (role === 'ayudante') return next({ name: 'ayudante' })
+  // // Si el usuario ya esta logueado y trata de ir al login, redirigir según su rol
+  if ((token && to.name === 'login' ) || (token && to.name === 'register')
+      || (token && to.name === 'visitor')) 
+  {
+      if (role === 'admin') return next({ name: 'admin' })
+      if (role === 'ayudante') return next({ name: 'ayudante' })
   }
 
   // Si no hay token y trata de ir a cualquier página que no sea login
-  if (!token && to.name !== 'login') {
-    return next({ name: 'login' })
-  }
+  // if (!token){
+  //   switch(to.name){
+  //     case !'login':
+  //         return next({ name: 'login' })
+  //       break
+  //     case !'register':
+  //         return next({ name: 'login' })
+  //       break
+  //     case !'visitor':
+  //         return next({ name: 'login' })
+  //       break
+  //       default:
+  //         return next({name: 'login'})
+  //         break
+  //   }
+    
+  //     //  return next({ name: 'login' })
+  // }
 
   // Control por roles
   if (to.name?.startsWith('admin') && role !== 'admin') return next({ name: 'login' })

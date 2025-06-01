@@ -1,91 +1,87 @@
 <template>
   <div>
-
-
     <h2>Bienvenido, Admin</h2>
 
-    <form @submit.prevent="crearUsuario" autocomplete="off" >
-
+    <form @submit.prevent="crearUsuario" autocomplete="off">
       <h3>Registrar nuevo usuario</h3>
-      <br>
+      <br />
       <label for="nombre">Ingrese el nombre</label>
       <input v-model="nuevo.name" id="nombre" placeholder="Wilson" />
 
       <label for="correo">Ingrese el Correo</label>
       <input v-model="nuevo.email" id="correo" placeholder="alguien@gmail.com" />
-      
+
       <label for="password">Ingrese lsa contrasenia</label>
       <input
-      autocomplete="new-password"
-      v-model="nuevo.password" type="password" id="password" placeholder="alguien123AAA" />
-      
+        autocomplete="new-password"
+        v-model="nuevo.password"
+        type="password"
+        id="password"
+        placeholder="alguien123AAA"
+      />
+
       <select v-model="nuevo.role">
         <option value="admin">Admin</option>
         <option value="ayudante">Ayudante</option>
       </select>
-      
-      <button type="submit">Registrar</button>
 
+      <button type="submit">Registrar</button>
     </form>
 
+    
+    <div class="mt-10">
 
-
-    <p v-if="mensaje" style="color: green">{{ mensaje }}</p>
-    <p v-if="error" style="color: red">{{ error }}</p>
-
-    <h3 style="margin-top: 2rem;">Usuarios registrados:</h3>
+      <p v-if="mensaje" style="color: green">{{ mensaje }}</p>
+      <p v-if="error" style="color: red">{{ error }}</p>
+    </div>
+      
+    <h3 style="margin-top: 2rem">Usuarios registrados:</h3>
     <ul>
       <li v-for="u in usuarios" :key="u.id">
-        {{ u.name }} ({{ u.email }}) - Rol: {{ u.role }} <button @click="cargarUser(u.id)"> Editar</button>
-        <button @click="deleteUser(u.id)" >Eliminar</button>
+        {{ u.name }} ({{ u.email }}) - Rol: {{ u.role }}
+        <button @click="cargarUser(u.id)">Editar</button>
+        <button @click="deleteUser(u.id)">Eliminar</button>
       </li>
     </ul>
-  
-    
-<br>
- 
-<label  > Contador: {{contador.cantidad}}</label>
 
-<div class="bg-red-500 text-white p-4 rounded-lg">
-  <button @click="sumar" >Sumarrr</button>
-  <button @click="restar" >Restar</button>
+    <br />
 
-</div>
- 
+    <label> Contador: {{ contador.cantidad }}</label>
 
-</div>
+    <div class="bg-red-500 text-white p-4 rounded-lg">
+      <button @click="sumar">Sumarrr</button>
+      <button @click="restar">Restar</button>
+    </div>
+  </div>
 
-
- 
-
-
-
-
-
-<div>
+  <div>
     <!-- Modal -->
     <div
       v-if="showModal"
       class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
     >
-      <div
-        class="bg-white rounded-xl p-6 shadow-lg w-full max-w-md mx-4 relative"
-      >
+      <div class="bg-white rounded-xl p-6 shadow-lg w-full max-w-md mx-4 relative">
         <h2 class="text-xl font-bold mb-4">Editar usuario</h2>
 
-      <label for="nombre">Nombre</label>
-      <input
-      class="w-full pt-2 pb-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
-       v-model="userSelected.name" value="{{userSelected.name}}" id="nombre"   />
+        <label for="nombre">Nombre</label>
+        <input
+          class="w-full pt-2 pb-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+          v-model="userSelected.name"
+          value="{{userSelected.name}}"
+          id="nombre"
+        />
 
-      <label for="rol_edit">Rol</label>
-      <input
-        class="w-full pt-2 pb-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
-        v-model="userSelected.role" value="{{userSelected.role}}" id="rol_edit"   />
+        <label for="rol_edit">Rol</label>
 
+        <select
+          v-model="userSelected.role"
+          class="w-full pt-2 pb-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+        >
+          <option value="admin">Admin</option>
+          <option value="ayudante">Ayudante</option>
+        </select>
 
-
-        <div class="flex justify-end gap-2">
+        <div class="flex mt-20 justify-end gap-2">
           <button
             class="px-4 py-2 bg-gray-300 text-black rounded hover:bg-gray-400"
             @click="showModal = false"
@@ -111,16 +107,6 @@
       </div>
     </div>
   </div>
-
-
-
-
-
-
-
-
-
-
 </template>
 
 <script setup>
@@ -135,16 +121,11 @@ const idUser = ref('')
 const contador = ref({
   id: '1',
   cantidad: 0,
-
 })
 
 const usuarios = ref([])
 const mensaje = ref('')
 const error = ref('')
-
-
-
-
 
 // Verifica el rol
 onMounted(async () => {
@@ -161,24 +142,25 @@ onMounted(async () => {
   }
 })
 
-
-
 const sumar = () => {
   const id = contador.value.cantidad
   contador.value.cantidad = id + 1
   updateContador()
 }
 const restar = () => {
+  
   const id = contador.value.cantidad
-  contador.value.cantidad = id - 1
-  updateContador()
+  if(id >= 1) {
+    contador.value.cantidad = id - 1
+    updateContador()
+
+  }
 }
 
 const updateContador = async () => {
   mensaje.value = ''
   error.value = ''
   try {
-    
     const res = await api.post('/update_contador', contador.value)
     await cargarContador()
   } catch (e) {
@@ -193,12 +175,9 @@ const cargarContador = async () => {
     const res = await api.get(`/get_contador/${contador.value.id}`)
     contador.value = res.data
   } catch (e) {
-      error.value = res.data.message    
+    error.value = res.data.message
   }
 }
-
-
-
 
 // Estados
 const nuevo = ref({
@@ -209,35 +188,31 @@ const nuevo = ref({
 })
 
 const userSelected = ref({
-  id: '1',
+  id: '',
+  name: '',
+  email: '',
+  password: '',
   role: '',
 })
-
-
-
- 
-
-
 
 // update usuario
 const updateUser = async () => {
   mensaje.value = ''
   error.value = ''
   try {
-    const res =  await api.post('/updateUser', userSelected.value)
+    const res = await api.post('/updateUser', userSelected.value)
     mensaje.value = res.data.message
 
     await cargarUsuarios()
     showModal.value = false
   } catch (e) {
-    error.value = 'Error al actualizar usuario'
-    console.error(e)
+    error.value = e.response.data.message
+    console.error()
   }
 }
 
- // Cargar usuario
+// Cargar usuario
 const cargarUser = async (id) => {
-  idUser.value = id
   try {
     const res = await api.get(`/uniqueuser/${id}`)
     userSelected.value = res.data
@@ -246,18 +221,18 @@ const cargarUser = async (id) => {
     error.value = 'Error al cargar el usuario'
   }
 }
- // eliminar un usuario
+
+// eliminar un usuario
 const deleteUser = async (id) => {
   idUser.value = id
   try {
     const res = await api.get(`/deleteUser/${id}`)
     mensaje.value = 'Usuario eliminado correctamente'
-    await cargarUsuarios()    
+    await cargarUsuarios()
   } catch (e) {
     error.value = 'Error al cargar el usuario'
   }
 }
- 
 
 // Crear usuario
 const crearUsuario = async () => {
@@ -284,8 +259,6 @@ const cargarUsuarios = async () => {
   }
 }
 
-
-
 // Logout
 const logout = async () => {
   try {
@@ -296,12 +269,8 @@ const logout = async () => {
 }
 </script>
 
-
-
 <style scoped>
-
 .router-link-exact-active {
   color: #3cffa7;
 }
-
 </style>

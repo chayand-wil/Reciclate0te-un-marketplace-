@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AdminController::class, 'store']);
 
 
 
@@ -15,7 +16,7 @@ Route::middleware(['auth:api'])->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
     
-     
+         
 
     Route::middleware(RoleMiddleware::class . ':admin')->group(function () {
         Route::get('/admin-data', function () {

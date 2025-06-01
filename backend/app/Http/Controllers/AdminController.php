@@ -91,12 +91,13 @@ public function updateUser(Request $request)
         'role' => 'required|in:admin,ayudante',
     ]);
 
+
     // Actualizar los campos del usuario
     $user->name = $request->name;
     $user->role = $request->role;
     $user->save();
 
-    return response()->json(['message' => '(back)Usuario actualizado correctamente'], 200);
+    return response()->json(['message' => 'Usuario actualizado correctamente'], 200);
 }
 
 public function destroy($id)

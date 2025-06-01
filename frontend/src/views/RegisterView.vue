@@ -1,0 +1,251 @@
+<template>
+  <div class="min-h-screen flex items-center justify-center bg-gray-500">
+   
+  <div  >
+    <h1>Crear tu cuenta de Reciclate</h1>
+
+    <p>
+      <router-link to="/recicla0te.com/login">Iniciar Sesion</router-link>
+    </p>
+
+    <form @submit.prevent="crearUsuario" autocomplete="off">
+      <div class="flex space-x-4 w-full">
+        <div class="relative w-1/2">
+          <input
+            v-model="nuevo.name"
+            @focus="focus_name = true"
+            @blur="focus_name = false"
+            type="text"
+            id="nombre"
+            placeholder=""
+            required
+            class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <label
+            :class="[
+              'absolute left-6 transition-all',
+              focus_name || nuevo.name
+                ? 'top-0.5 text-base text-xs text-blue-500'
+                : 'top-4 text-lg text-gray-500',
+            ]"
+            for="nombre"
+          >
+            Nombre
+          </label>
+        </div>
+
+        <div class="relative w-1/2">
+          <input
+            v-model="apellido"
+            @focus="focus_lastname = true"
+            @blur="focus_lastname = false"
+            type="text"
+            id="apellido"
+            placeholder=" "
+            class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
+          <label
+            :class="[
+              'absolute left-6 transition-all',
+              focus_lastname || apellido
+                ? 'top-0.5 text-base text-xs text-blue-500'
+                : 'top-4 text-lg text-gray-500',
+            ]"
+            for="apellido"
+          >
+            Apellido
+          </label>
+        </div>
+      </div>
+
+      <div class="relative w-full mt-1">
+        <input
+          autocomplete="new-email"
+          v-model="nuevo.email"
+          @focus="focus_mail = true"
+          @blur="focus_mail = false"
+          type="text"
+          id="mail"
+          placeholder=" "
+          required
+          class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <label
+          :class="[
+            'absolute left-6 transition-all',
+            focus_mail || nuevo.email
+              ? 'top-0.5 text-base text-xs text-blue-500'
+              : 'top-4 text-lg text-gray-500',
+          ]"
+          for="mail"
+        >
+          Correo electronico
+        </label>
+      </div>
+
+      <div class="relative w-full mt-1">
+        <input
+          autocomplete="new-password"
+          v-model="nuevo.password"
+          @focus="focus_password = true"
+          @blur="focus_password = false"
+          type="password"
+          id="password"
+          placeholder=" "
+          required
+          class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <label
+          :class="[
+            'absolute left-6 transition-all',
+            focus_password || nuevo.password
+              ? 'top-0.5 text-base text-xs text-blue-500'
+              : 'top-4 text-lg text-gray-500',
+          ]"
+          for="password"
+        >
+          Ingrese una contrasena
+        </label>
+      </div>
+
+
+<div class="mt-4">
+  <label for="role" class="block text-gray-400 mb-1">Rol</label>
+  <select
+    id="role"
+    v-model="nuevo.role"
+    class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="admin">Admin</option>
+    <option value="ayudante">Ayudante</option>
+  </select>
+</div>
+
+
+
+      <label>Fecha de nacimiento</label>
+ <div class="mt-4">
+  <label class="block text-gray-400 mb-1">Fecha de nacimiento</label>
+  <div class="flex gap-2">
+    <select class="w-1/3 bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option>Día</option>
+    </select>
+    <select class="w-1/3 bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option>Mes</option>
+    </select>
+    <select class="w-1/3 bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option>Año</option>
+    </select>
+  </div>
+</div>
+
+
+<div class="flex justify-between mt-6">
+  <router-link
+    to="/recicla0te.com/visitor"
+    class="text-blue-500 hover:underline"
+  >
+    Cancelar
+  </router-link>
+  <button
+    type="submit"
+    class="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 transition"
+  >
+    Continuar
+  </button>
+</div>
+
+</form>
+    <div v-if="mensaje" class="text-green-500 mb-4">{{ mensaje }}</div>
+    <div v-if="error" class="text-red-500 mb-4">{{ error }}</div>
+  </div>
+    
+  </div>
+
+
+
+
+
+
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue'
+import api from '../axios'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+
+const apellido = ref('')
+
+const focus_name = ref(false)
+const focus_lastname = ref(false)
+const focus_mail = ref(false)
+const focus_password = ref(false)
+
+const mensaje = ref('')
+const error = ref('')
+
+// Verifica el rol
+onMounted(async () => {})
+
+const nuevo = ref({
+  name: '',
+  email: '',
+  password: '',
+  role: 'ayudante',
+})
+
+// Crear usuario
+const crearUsuario = async () => {
+  // alert('Crear usuario')
+  mensaje.value = ''
+  error.value = ''
+  try {
+    const res = await api.post('/register', nuevo.value)
+    mensaje.value = 'Usuario creado correctamente'
+
+    await login() // Iniciar sesion automaticamente  
+
+  } catch (err) {
+    nuevo.value = { name: '', email: '', password: '', role: 'ayudante' }
+    error.value = 'Error al crear usuario'
+      // error.value = err.response.data.message 
+    }
+}
+
+
+
+
+
+const login = async () => {
+
+    
+    try {
+      const response = await api.post('/login', {
+        email: nuevo.value.email,
+        password: nuevo.value.password,
+      })
+
+      
+      const token = response.data.access_token
+      const role = response.data.user.role
+
+      localStorage.setItem('token', token)
+      localStorage.setItem('role', role)
+
+      if (role === 'admin') {
+        router.push('/admin')
+      } else {
+        router.push('/ayudante')
+      }
+    } catch (err) {
+      // error.value =  err.response.data.message 
+      error.value = 'Credenciales incorrectas'
+    }
+}
+
+
+
+
+</script>

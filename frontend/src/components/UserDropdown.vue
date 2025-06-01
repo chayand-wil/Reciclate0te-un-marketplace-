@@ -34,6 +34,7 @@ const handleClickOutside = (e) => {
 }
 
 onMounted(async () => {
+
   document.addEventListener('click', handleClickOutside)
   try {
     const res = await api.get('/me')
@@ -41,6 +42,7 @@ onMounted(async () => {
   } catch {
     router.push('/')
   }
+  
 })
 
 onBeforeUnmount(() => {

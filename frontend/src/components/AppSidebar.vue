@@ -1,11 +1,10 @@
 <template>
   <aside class="sidebar">
     <ul>
-      <li><router-link to="/admin">Inicio</router-link></li>
-      <li><router-link to="/admin/usuarios">Usuarios</router-link></li>
-      <li><router-link to="/admin/reportes">Reportes</router-link></li>
-      <li><router-link to="/admin/rand">Reportes</router-link></li>
-      <li><router-link to="/admin/otra">otra</router-link></li>
+      <li><router-link to="/recicla0te.com/admin">Inicio</router-link></li>
+      <li><router-link to="/recicla0te.com/admin/usuarios">Usuarios</router-link></li>
+      <li><router-link to="/recicla0te.com/admin/reportes">Reportes</router-link></li>
+      <li><router-link to="/recicla0te.com/admin/rand">Reportes</router-link></li>
     </ul>
   </aside>
 </template>
@@ -27,7 +26,7 @@
 }
 @media (prefers-color-scheme: dark) {
   .sidebar {
-    background: rgba(1, 3, 116, 0.558); /* Para modo oscuro */
+    background: rgba(0, 54, 32, 0.558); /* Para modo oscuro */
   }
 }
 
