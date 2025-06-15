@@ -34,9 +34,15 @@ Route::middleware(['auth:api'])->group(function () {
 
 
 
-    Route::middleware(RoleMiddleware::class . ':ayudante')->group(function () {
-        Route::get('/ayudante-data', function () {
-            return response()->json(['data' => 'Solo ayudante puede ver esto']);
+    Route::middleware(RoleMiddleware::class . ':reutilizador')->group(function () {
+        Route::get('/reutilizador-data', function () {
+            return response()->json(['data' => 'Solo reutilizador puede ver esto']);
+        });
+    });
+    
+    Route::middleware(RoleMiddleware::class . ':reutilizador')->group(function () {
+        Route::get('/reutilizador-data', function () {
+            return response()->json(['data' => 'Solo reutilizador puede ver esto']);
         });
     });
 

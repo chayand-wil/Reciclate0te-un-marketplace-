@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Rol;
+
 
 class User extends Authenticatable implements JWTSubject
 {
+
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
@@ -22,8 +25,10 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
-        'role',
+        'id_rol',
     ];
+
+    // protected $appends = ['nombre_rol'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -47,6 +52,16 @@ class User extends Authenticatable implements JWTSubject
             'password' => 'hashed',
         ];
     }
+    
+    // Relación: Un usuario pertenece a un rol
+    public function rol()
+    {
+        return $this->belongsTo(Rol::class, 'id_rol');
+    }
+     
+    // $rol = Rol::where('nombre', 'Ecoemprendedor')->first();
+    // $usuarios = $rol->usuarios;  // Aquí se usa la relación
+
 
 
     public function getJWTIdentifier() {
@@ -56,5 +71,13 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    // public function getNombreRolAttribute()
+    // {
+    //     return $this->rol ? $this->rol->slug : null;
+    // }
+
+
+
+    
 
 }

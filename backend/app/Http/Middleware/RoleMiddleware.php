@@ -15,9 +15,10 @@ class RoleMiddleware
      */
 public function handle(Request $request, Closure $next, $role)
 {
-    if (auth()->user()->role !== $role) {
-        return response()->json(['error' => 'No autorizado'], 403);
-    }
+    $user = auth()->user()->load('rol');
+    if ($user->rol->slug !== $role) {
+        return response()->json(['error' => 'No autorizadoooo'], 403);
+    }   
 
     return $next($request);
 }

@@ -1,16 +1,60 @@
-<template>
-  <div ref="menuRef" class="user-menu">
+ <template>
+  <div ref="menuRef" class="relative">
     <!-- Botón de apertura -->
-    <button class="icon-button" @click.stop="toggle">👤</button>
+    <button
+      class="text-white text-2xl bg-transparent border-none cursor-pointer"
+      @click.stop="toggle"
+    >    <svg
+  xmlns="http://www.w3.org/2000/svg"
+  fill="white"
+  viewBox="0 0 24 24"
+  width="24"
+  height="24"
+>
+  <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
+</svg>
+    </button>
 
+    
+
+    
     <!-- Menú desplegable -->
-    <div v-if="open" class="dropdown">
-      <p><strong>{{ user.name }}</strong></p>
-      <p>{{ user.email }}</p>
-      <button @click="logout">Cerrar sesión</button>
+    <div
+      v-if="open"
+      class="absolute right-0 mt-2 w-64 rounded-xl bg-white/10 backdrop-blur-sm shadow-xl text-white p-4 z-50"
+    >
+      <template v-if="user.name">
+        <p class="font-semibold text-green-400">{{ user.name }}</p>
+        <p class="mb-4 text-sm text-gray-300">{{ user.email }}</p>
+        <button
+          @click="logout"
+          class="w-full text-green-400 border border-green-400 px-4 py-2 rounded-md hover:bg-green-400 hover:text-white transition"
+        >
+          Cerrar sesión
+        </button>
+      </template>
+
+      <template v-else>
+        <p class="font-semibold text-red-400 mb-4">No has iniciado sesión</p>
+        <button
+          @click="router.push('/recicla0te.com/login')"
+          
+          class="w-full text-green-400 border border-green-400 px-4 py-2 rounded-md hover:bg-green-400 hover:text-white transition"
+        >
+          Iniciar sesión
+        </button>
+      </template>
     </div>
   </div>
 </template>
+
+
+
+
+
+
+
+
 
 
 <script setup>
@@ -34,7 +78,6 @@ const handleClickOutside = (e) => {
 }
 
 onMounted(async () => {
-
   document.addEventListener('click', handleClickOutside)
   try {
     const res = await api.get('/me')
@@ -42,7 +85,6 @@ onMounted(async () => {
   } catch {
     router.push('/')
   }
-  
 })
 
 onBeforeUnmount(() => {
@@ -56,31 +98,8 @@ const logout = async () => {
   localStorage.clear()
   router.push('/')
 }
+ 
+
+
 </script>
-
-<style scoped>
-.user-menu {
-  position: relative;
-}
-
-.icon-button {
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-.dropdown {
-  position: absolute;
-  top: 2rem;
-  right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  padding: 1rem;
-  color: #333;
-  width: 200px;
-  z-index: 100;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-</style>
-
+ 

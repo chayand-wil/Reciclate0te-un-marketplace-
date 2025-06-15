@@ -3,7 +3,7 @@
     <ul>
       <li><router-link to="/recicla0te.com/admin">Inicio</router-link></li>
       <li><router-link to="/recicla0te.com/admin/usuarios">Usuarios</router-link></li>
-      <li><router-link to="/recicla0te.com/admin/reportes">Reportes</router-link></li>
+      <li><router-link to="/recicla0te.com/admin/reportes">Publicaciones</router-link></li>
       <li><router-link to="/recicla0te.com/admin/rand">Reportes</router-link></li>
     </ul>
   </aside>

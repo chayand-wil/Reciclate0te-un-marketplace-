@@ -40,7 +40,7 @@ import AppSidebar from '../components/AppSidebar.vue'
   height: 100%;
   width: 100%;
   overflow: auto;
-  color: white;
+  color: white; 
 }
 
 

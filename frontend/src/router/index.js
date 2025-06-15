@@ -50,13 +50,13 @@ const routes = [
   ]
 },
 
-// Ayudante  
+// reutilizador 
 {
-  path: '/recicla0te.com/ayudante',
-  name: 'ayudante',
+  path: '/recicla0te.com/reutilizador',
+  name: 'reutilizador',
   component: AyudanteView,
   children: [
-    { path: ':pathMatch(.*)*', redirect: { name: 'ayudante' } },
+    { path: ':pathMatch(.*)*', redirect: { name: 'reutilizador' } },
 
   ]
 },
@@ -91,9 +91,11 @@ router.beforeEach((to, from, next) => {
       || (token && to.name === 'visitor')) 
   {
       if (role === 'admin') return next({ name: 'admin' })
-      if (role === 'ayudante') return next({ name: 'ayudante' })
+      // if (role === 'clasificador') return next({ name: 'clasificador' })
+      if (role === 'reutilizador') return next({ name: 'reutilizador' })
   }
 
+  
   // Si no hay token y trata de ir a cualquier página que no sea login
   // if (!token){
   //   switch(to.name){
@@ -116,7 +118,7 @@ router.beforeEach((to, from, next) => {
 
   // Control por roles
   if (to.name?.startsWith('admin') && role !== 'admin') return next({ name: 'login' })
-  if (to.name === 'ayudante' && role !== 'ayudante') return next({ name: 'login' })
+  if (to.name === 'reutilizador' && role !== 'reutilizador') return next({ name: 'login' })
 
   next()
 })

@@ -11,14 +11,14 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
+        
         if (! $token = auth()->attempt($credentials)) {
             return response()->json(['error' => 'Credenciales inválidas'], 401);
         }
-
+        $user = auth()->user()->load('rol');
         return response()->json([
             'access_token' => $token,
-            'user' => auth()->user()
+            'user' => $user,
         ]);
     }
 
@@ -33,7 +33,8 @@ class AuthController extends Controller
     }
 
     public function me()
-    {
-        return response()->json(auth()->user());
+    {   
+        $user = auth()->user()->load('rol');
+        return response()->json($user);
     }
 }

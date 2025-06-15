@@ -15,21 +15,22 @@ public function store(Request $request)
         'name' => 'required|string|max:255',
         'email' => 'required|email|unique:users,email',
         'password' => 'required|min:6',
-        'role' => 'required|in:admin,ayudante',
+        'id_rol' => 'required|in:1,2,3,4',
     ]);
 
     $user = User::create([
         'name'     => $request->name,
         'email'    => $request->email,
         'password' => bcrypt($request->password),
-        'role'     => $request->role,
+        'id_rol'     => $request->id_rol,
     ]);
 
 }   
 
 public function index() //jala todos los usuarios
 {
-    return User::select('id', 'name', 'email', 'role', 'created_at')->get();
+    // return User::all();
+    return User::select('id', 'name', 'email', 'id_rol', 'created_at')->get();
 }
 
 

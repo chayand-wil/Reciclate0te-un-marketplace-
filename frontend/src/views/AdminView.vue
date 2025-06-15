@@ -1,34 +1,158 @@
 <template>
   <div>
-    <h2>Bienvenido, Admin</h2>
 
-    <form @submit.prevent="crearUsuario" autocomplete="off">
-      <h3>Registrar nuevo usuario</h3>
-      <br />
-      <label for="nombre">Ingrese el nombre</label>
-      <input v-model="nuevo.name" id="nombre" placeholder="Wilson" />
+    <div class="mt-16 w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white">
+      <h1>Registrar usuario</h1>
+      <br>
+ 
+      <br>
+      <form @submit.prevent="crearUsuario" autocomplete="off">
+        <div class="flex space-x-4 w-full">
+          <div class="relative w-1/2">
+            <input
+              v-model="nuevo.name"
+              @focus="focus_name = true"
+              @blur="focus_name = false"
+              type="text"
+              id="nombre"
+              placeholder=""
+              required
+              class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+            />
+            <label
+              :class="[
+                'absolute left-6 transition-all',
+                focus_name || nuevo.name
+                  ? 'top-0.5 text-base text-xs text-blue-500'
+                  : 'top-4 text-lg text-gray-500',
+              ]"
+              for="nombre"
+            >
+              Nombre
+            </label>
+          </div>
 
-      <label for="correo">Ingrese el Correo</label>
-      <input v-model="nuevo.email" id="correo" placeholder="alguien@gmail.com" />
+          <div class="relative w-1/2">
+            <input
+              v-model="apellido"
+              @focus="focus_lastname = true"
+              @blur="focus_lastname = false"
+              type="text"
+              id="apellido"
+              placeholder=" "
+              class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+            />
+            <label
+              :class="[
+                'absolute left-6 transition-all',
+                focus_lastname || apellido
+                  ? 'top-0.5 text-base text-xs text-blue-500'
+                  : 'top-4 text-lg text-gray-500',
+              ]"
+              for="apellido"
+            >
+              Apellido
+            </label>
+          </div>
+        </div>
 
-      <label for="password">Ingrese lsa contrasenia</label>
-      <input
-        autocomplete="new-password"
-        v-model="nuevo.password"
-        type="password"
-        id="password"
-        placeholder="alguien123AAA"
-      />
+        <div class="relative w-full mt-1">
+          <input
+            autocomplete="new-email"
+            v-model="nuevo.email"
+            @focus="focus_mail = true"
+            @blur="focus_mail = false"
+            type="text"
+            id="mail"
+            placeholder=" "
+            required
+            class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+          />
+          <label
+            :class="[
+              'absolute left-6 transition-all',
+              focus_mail || nuevo.email
+                ? 'top-0.5 text-base text-xs text-blue-500'
+                : 'top-4 text-lg text-gray-500',
+            ]"
+            for="mail"
+          >
+            Correo electronico
+          </label>
+        </div> 
 
-      <select v-model="nuevo.role">
-        <option value="admin">Admin</option>
-        <option value="ayudante">Ayudante</option>
-      </select>
+        <div class="relative w-full mt-1">
+          <input
+            autocomplete="new-password"
+            v-model="nuevo.password"
+            @focus="focus_password = true"
+            @blur="focus_password = false"
+            type="password"
+            id="password"
+            placeholder=" "
+            required
+            class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+          />
+          <label
+            :class="[
+              'absolute left-6 transition-all',
+              focus_password || nuevo.password
+                ? 'top-0.5 text-base text-xs text-blue-500'
+                : 'top-4 text-lg text-gray-500',
+            ]"
+            for="password"
+          >
+            Ingrese una contrasena
+          </label>
+        </div>
 
-      <button type="submit">Registrar</button>
-    </form>
+        <div class="mt-4">
+          <label for="id_rol" class="block text-gray-400 mb-1">Rol</label>
+          <select
+            id="id_rol"
+            v-model="nuevo.id_rol"
+            class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+          >
+          <option value="1">Administrador</option>
+          <option value="2">Administrador de punto de acopio</option>         
+          <option value="3">Administrador Clasificador</option>
+          <option value="4">Reutilizador</option>
+          <option value="5">Ecoemprendedor</option>
+        </select>
+        </div>
+
+        <label class="block mt-4 text-gray-400 mb-1">Fecha de nacimiento</label>
+        <div class="flex gap-2">
+          <select class="w-1/3 bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200">
+            <option>Día</option>
+          </select>
+          <select class="w-1/3 bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200">
+            <option>Mes</option>
+          </select>
+          <select class="w-1/3 bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200">
+            <option>Año</option>
+          </select>
+        </div>
+
+        <div class="flex justify-between mt-6">
+          <button
+          type="submit"
+            class="block mx-auto w-2/4 text-center text-green-400 border border-green-400 px-4 py-2 rounded-md hover:bg-green-400 hover:text-white transition"
+          >
+            Continuar
+          </button>
+        </div>
+      </form>
+
+    </div>
 
     
+
+    
+
+
+
+
     <div class="mt-10">
 
       <p v-if="mensaje" style="color: green">{{ mensaje }}</p>
@@ -38,13 +162,18 @@
     <h3 style="margin-top: 2rem">Usuarios registrados:</h3>
     <ul>
       <li v-for="u in usuarios" :key="u.id">
-        {{ u.name }} ({{ u.email }}) - Rol: {{ u.role }}
+        {{ u.name }} ({{ u.email }}) - Rol: {{ u.id_rol }}
         <button @click="cargarUser(u.id)">Editar</button>
         <button @click="deleteUser(u.id)">Eliminar</button>
       </li>
     </ul>
 
     <br />
+
+
+
+
+
 
     <label> Contador: {{ contador.cantidad }}</label>
 
@@ -54,18 +183,21 @@
     </div>
   </div>
 
-  <div>
+
+
+ 
     <!-- Modal -->
     <div
       v-if="showModal"
-      class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+      class="fixed inset-0 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-2xl bg-opacity-50 z-50"
     >
-      <div class="bg-white rounded-xl p-6 shadow-lg w-full max-w-md mx-4 relative">
+     <div class="w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg ">
         <h2 class="text-xl font-bold mb-4">Editar usuario</h2>
 
         <label for="nombre">Nombre</label>
         <input
-          class="w-full pt-2 pb-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+            class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+
           v-model="userSelected.name"
           value="{{userSelected.name}}"
           id="nombre"
@@ -74,8 +206,9 @@
         <label for="rol_edit">Rol</label>
 
         <select
-          v-model="userSelected.role"
-          class="w-full pt-2 pb-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+          v-model="userSelected.id_rol"
+            class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+
         >
           <option value="admin">Admin</option>
           <option value="ayudante">Ayudante</option>
@@ -106,13 +239,25 @@
         </button>
       </div>
     </div>
-  </div>
+   
+
+ 
 </template>
+
+
 
 <script setup>
 import { ref, onMounted } from 'vue'
 import api from '../axios'
 import { useRouter } from 'vue-router'
+
+
+
+const focus_name = ref(false)
+const focus_lastname = ref(false)
+const focus_mail = ref(false)
+const focus_password = ref(false)
+
 
 const router = useRouter()
 
@@ -131,7 +276,7 @@ const error = ref('')
 onMounted(async () => {
   try {
     const res = await api.get('/me')
-    if (res.data.role !== 'admin') {
+    if (res.data.rol.slug !== 'admin') {
       router.push('/')
     } else {
       await cargarUsuarios()
@@ -183,8 +328,8 @@ const cargarContador = async () => {
 const nuevo = ref({
   name: '',
   email: '',
-  password: '',
-  role: 'ayudante',
+  password: '', 
+  id_rol: 4, // Por defecto, 4 el rol es 'reutilizador'
 })
 
 const userSelected = ref({
@@ -192,7 +337,7 @@ const userSelected = ref({
   name: '',
   email: '',
   password: '',
-  role: '',
+  id_rol: '',
 })
 
 // update usuario
@@ -241,7 +386,7 @@ const crearUsuario = async () => {
   try {
     await api.post('/users', nuevo.value)
     mensaje.value = 'Usuario creado correctamente'
-    nuevo.value = { name: '', email: '', password: '', role: 'ayudante' }
+    nuevo.value = { name: '', email: '', password: '', id_rol: 4 }
     await cargarUsuarios()
   } catch (e) {
     error.value = 'Error al crear usuario'
@@ -253,7 +398,7 @@ const crearUsuario = async () => {
 const cargarUsuarios = async () => {
   try {
     const res = await api.get('/users')
-    usuarios.value = res.data
+    usuarios.value = res.data 
   } catch (e) {
     error.value = 'Error al cargar usuarios'
   }

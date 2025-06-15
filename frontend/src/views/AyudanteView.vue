@@ -14,7 +14,7 @@ const router = useRouter()
 onMounted(async () => {
   try {
     const res = await api.get('/me')
-    if (res.data.role !== 'ayudante') {
+    if (res.data.rol.slug !== 'reutilizador') {
       router.push('/')
     }
   } catch (e) {
