@@ -103,7 +103,7 @@
 <script setup>
 import { ref } from 'vue'
 // import axios from 'axios'
-import api from '../axios'
+import api from '../../axios'
 
 import { useRouter } from 'vue-router'
 

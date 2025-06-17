@@ -1,0 +1,6 @@
+<template>
+
+    <!-- las tarjetas  -->
+
+     
+</template>

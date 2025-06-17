@@ -4,8 +4,9 @@
     <div class="mt-16 w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white">
       <h1>Registrar usuario</h1>
       <br>
- 
       <br>
+      <h2>algo</h2>      
+      
       <form @submit.prevent="crearUsuario" autocomplete="off">
         <div class="flex space-x-4 w-full">
           <div class="relative w-1/2">
@@ -248,7 +249,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import api from '../axios'
+import api from '../../axios'
 import { useRouter } from 'vue-router'
 
 
@@ -384,12 +385,17 @@ const crearUsuario = async () => {
   mensaje.value = ''
   error.value = ''
   try {
-    await api.post('/users', nuevo.value)
-    mensaje.value = 'Usuario creado correctamente'
+    const res = await api.post('/users', nuevo.value)
+    // mensaje.value = 'Usuario creado correctamente'
+    mensaje.value = res.data.message
+    const idd = res.data.user_id 
+    console.log("ultimo user insertado id: " + idd)
+
     nuevo.value = { name: '', email: '', password: '', id_rol: 4 }
     await cargarUsuarios()
   } catch (e) {
-    error.value = 'Error al crear usuario'
+    // error.value = 'Error al crear usuario'
+    error.value = e.response.data.message
     console.error(e)
   }
 }

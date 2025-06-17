@@ -5,7 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\ArticleController;
+use App\Http\Controllers\PublicationController;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AdminController::class, 'store']);
@@ -31,13 +32,18 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/get_contador/{id}', [AdminController::class, 'getContador']);
         Route::post('/update_contador', [AdminController::class, 'updateContador']);   
     });
-
-
-
+    
+    
+    
     Route::middleware(RoleMiddleware::class . ':reutilizador')->group(function () {
         Route::get('/reutilizador-data', function () {
             return response()->json(['data' => 'Solo reutilizador puede ver esto']);
         });
+        
+        Route::post('/articulo', [ArticleController::class, 'store']);   
+        Route::post('/publication', [PublicationController::class, 'store']);   
+
+ 
     });
     
     Route::middleware(RoleMiddleware::class . ':reutilizador')->group(function () {

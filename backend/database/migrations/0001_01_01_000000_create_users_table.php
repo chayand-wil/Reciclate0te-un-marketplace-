@@ -11,20 +11,137 @@ return new class extends Migration
      */
     public function up(): void
     {
+// CREATE DATABASE reciclate_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+                // Tablas Catálogo
+        Schema::create('pais', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 100);
+        });
+
+        Schema::create('departamento', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 100);
+            $table->foreignId('id_pais')->constrained('pais')->onDelete('cascade');
+        });
+
+        Schema::create('municipio', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 100);
+            $table->foreignId('id_departamento')->constrained('departamento')->onDelete('cascade');
+        });
+
+        Schema::create('motivo_denuncia', function (Blueprint $table) {
+            $table->id();
+            $table->string('motivo', 255);
+        });
+
+        Schema::create('estado_denuncia', function (Blueprint $table) {
+            $table->id();
+            $table->string('estado', 100);
+        });
+
+        Schema::create('categoria_articulo', function (Blueprint $table) {
+            $table->id();
+            $table->string('descripcion', 100);
+        });
+
+        Schema::create('tipo_publico', function (Blueprint $table) {
+            $table->id();
+            $table->string('tipo', 100);
+        });
+
+        Schema::create('calidad_articulo', function (Blueprint $table) {
+            $table->id();
+            $table->string('calidad', 50);
+            $table->string('slug', 50);
+        });
+
+        Schema::create('estado_articulo', function (Blueprint $table) {
+            $table->id();
+            $table->string('estado', 50);
+            $table->string('slug', 50);
+        });
+
+        Schema::create('articulo_estado_adquisicion', function (Blueprint $table) {
+            $table->id();
+            $table->string('estado_adquisicion', 100);
+            $table->string('slug', 50);
+        });
+
+        Schema::create('estado_solicitud', function (Blueprint $table) {
+            $table->id();
+            $table->string('estado', 100);
+            $table->string('slug', 50);
+        });
+
+        Schema::create('publicacion_visibilidad', function (Blueprint $table) {
+            $table->id();
+            $table->string('visibilidad', 100);
+        });
+
+        Schema::create('role_users', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 100);
+            $table->string('slug', 50);
+        });
+
+        Schema::create('habilidad', function (Blueprint $table) {
+            $table->id();
+            $table->string('descripcion', 100);
+            $table->string('slug', 50);
+        });
+
+        Schema::create('estado_usuario', function (Blueprint $table) {
+            $table->id();
+            $table->string('estado', 100);
+        });
+
+        Schema::create('insignias', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 100);
+            $table->text('descripcion');
+        });
+
+        Schema::create('nivel', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre_nivel', 100);
+            $table->text('descripcion');
+            $table->integer('puntos_necesarios');
+        });
+
+
+
+        // Schema::create('users', function (Blueprint $table) {
+            
+            
+        //     // // Clave foránea hacia tabla roles
+        //     // $table->foreign('id_rol')->references('id')->on('roles')->onDelete('cascade');
+            
+        // });
+        
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('name', 100);
+            $table->string('last_name', 100)->nullable();
+            $table->string('email', 100)->unique();
             $table->string('password');
-            $table->rememberToken();
+            $table->string('dpi', 20)->unique()->nullable();
+            $table->foreignId('id_estado')->constrained('estado_usuario')->nullable();
+            $table->foreignId('id_rol')->constrained('role_users');
+            $table->foreignId('id_nivel')->constrained('nivel')->nullable();
+            $table->integer('cantidad_puntos')->default(0);
+            $table->foreignId('id_municipio')->constrained('municipio')->nullable();
+            $table->text('detalle_direccion')->nullable();
+            $table->text('contacto')->nullable();
             $table->timestamps();
-
-
-            // // Clave foránea hacia tabla roles
-            // $table->foreign('id_rol')->references('id')->on('roles')->onDelete('cascade');
-
+            $table->timestamp('email_verified_at')->nullable();
+            $table->rememberToken();
         });
+
+
+
+
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
@@ -42,6 +159,14 @@ return new class extends Migration
         });
     }
 
+
+
+
+
+
+
+
+    
     /**
      * Reverse the migrations.
      */

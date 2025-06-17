@@ -63,9 +63,10 @@ import api from '../axios'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const open = ref(false)
-const user = ref({ name: '', email: '' })
 const menuRef = ref(null)
+const open = ref(false)
+
+const user = ref({ id: null, name: '', email: '' })
 
 const toggle = () => {
   open.value = !open.value
@@ -86,6 +87,7 @@ onMounted(async () => {
     router.push('/')
   }
 })
+
 
 onBeforeUnmount(() => {
   document.removeEventListener('click', handleClickOutside)
