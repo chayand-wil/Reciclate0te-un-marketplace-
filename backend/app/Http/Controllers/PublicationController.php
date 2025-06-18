@@ -17,10 +17,14 @@ class PublicationController extends Controller
     //     $table->timestamps();
     // });
 
-    public function index()
-    {
-        //s
-    }
+
+public function index()  
+{
+    return Publication::all()->load([
+        'user', 
+        'article', 
+    ]);
+}
 
 
 public function store()
@@ -28,7 +32,7 @@ public function store()
     try {
         $data = request()->validate([
             'id_usuario' => 'required|integer|exists:users,id',
-            'id_articulo' => 'required|integer|exists:articulso,id',  
+            'id_articulo' => 'required|integer|exists:articulo,id',  
             'imagen_url' => 'required|string',
             'id_publicacion_visibilidad' => 'required|integer|exists:publicacion_visibilidad,id',
         ]);

@@ -2,13 +2,14 @@
   <div class="layout">
     <AppHeader />
     <div class="main">
-      <AppSidebar />
+      <!-- <AppSidebar /> -->
       <div class="content">
         <router-view />
       </div>
     </div>
   </div>
 </template>
+
 
 <script setup>  
 import AppHeader from '../components/reutilizador/AppHeader.vue'

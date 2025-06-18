@@ -99,9 +99,10 @@
             v-model="article.id_categoria_articulo"
             class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
           >
-            <option value="1">Adulto</option>
-            <option value="2">Ninios</option>
-            <option value="4">Familiar</option>
+            <option value="" disabled selected>Seleccione una categoria</option>
+            <option v-for="cat in catalogoCategoria" :key="cat.id" :value="cat.id">
+              {{ cat.descripcion }}
+            </option>
           </select>
         </div>
 
@@ -112,9 +113,10 @@
             v-model="article.id_tipo_publico"
             class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
           >
-            <option value="1">Adulto</option>
-            <option value="2">Ninios</option>
-            <option value="4">Familiar</option>
+            <option value="" disabled selected>Seleccione un tipo de publico</option>
+            <option v-for="cat in catalogoPublico" :key="cat.id" :value="cat.id">
+              {{ cat.tipo }}
+            </option>
           </select>
         </div>
 
@@ -127,9 +129,10 @@
             v-model="article.calidad_articulo"
             class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
           >
-            <option value="1">Adulto</option>
-            <option value="2">Ninios</option>
-            <option value="4">Familiar</option>
+            <option value="" disabled selected>Seleccione una calidad</option>
+            <option v-for="cat in catalogoCalidad" :key="cat.id" :value="cat.id">
+              {{ cat.slug }}
+            </option>
           </select>
         </div>
 
@@ -142,9 +145,10 @@
             v-model="article.estado_articulo"
             class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
           >
-            <option value="1">Adulto</option>
-            <option value="2">Ninios</option>
-            <option value="4">Familiar</option>
+            <option value="" disabled selected>Seleccione un estado</option>
+            <option v-for="cat in catalogoEstado" :key="cat.id" :value="cat.id">
+              {{ cat.slug }}
+            </option>
           </select>
         </div>
 
@@ -189,7 +193,7 @@
       <!-- Mensaje de éxito -->
       <div
         v-if="mensaje"
-        class="bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white"
+        class="bg-white/20 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-xl text-verdee"
       >
         {{ mensaje }}
       </div>
@@ -215,6 +219,11 @@ const focus_detalles = ref(false)
 const focus_descripcion = ref(false)
 const focus_imagen_url = ref(false)
 
+const catalogoCategoria = ref([])
+const catalogoPublico = ref([])
+const catalogoCalidad = ref([])
+const catalogoEstado = ref([])
+
 const router = useRouter()
 
 const mensaje = ref('')
@@ -234,7 +243,7 @@ const article = ref({
   nombre: 'Bicicleta',
   descripcion: ' articulo de prueba',
   detalles: 'algoooooun detalle',
-  id_categoria_articulo: 2,
+  id_categoria_articulo: 1,
   id_tipo_publico: 1,
   calidad_articulo: 1,
   estado_articulo: 1,
@@ -258,7 +267,7 @@ onMounted(async () => {
     } else {
       user.value = res.data
       pub.value.id_usuario = user.value.id // Asignar el ID del usuario a la publicación
-
+      await cargarCatalogos()
       //cargar filtros, categorias, tipos de publicos, calidades, estados
       // await cargarUsuarios()
     }
@@ -267,7 +276,28 @@ onMounted(async () => {
   }
 })
 
-// Crear publicacion
+const cargarCatalogos = async () => {
+  const nombreCatalogo = 'categoria_articulo' // Cambia esto al nombre del catálogo que necesitas
+  const nombreCatalogo2 = 'tipo_publico' // Cambia esto al nombre del catálogo que necesitas
+  const nombreCatalogo3 = 'calidad_articulo' // Cambia esto al nombre del catálogo que necesitas
+  const nombreCatalogo4 = 'estado_articulo' // Cambia esto al nombre del catálogo que necesitas
+  mensaje.value = ''
+  error.value = ''
+  try {
+    const res = await api.get(`/get_catalogo/${nombreCatalogo}`)
+    catalogoCategoria.value = res.data
+    const res2 = await api.get(`/get_catalogo/${nombreCatalogo2}`)
+    catalogoPublico.value = res2.data
+    const res3 = await api.get(`/get_catalogo/${nombreCatalogo3}`)
+    catalogoCalidad.value = res3.data
+    const res4 = await api.get(`/get_catalogo/${nombreCatalogo4}`)
+    catalogoEstado.value = res4.data
+  } catch (e) {
+    error.value = res.data.message
+  }
+}
+
+                                              // Crear publicacion
 const crearPublicacion = async () => {
   mensaje.value = ''
   error.value = ''
@@ -280,8 +310,10 @@ const crearPublicacion = async () => {
 
       setTimeout(() => {
         mensaje.value = ''
-      }, 3000) // 3 segundos en lugar de 1
+        router.push('/recicla0te.com/reutilizador/home')
+      }, 2000) // 4 segundos en lugar de 1
     }
+    
   } catch (e) {
     const res = e.response
 
@@ -289,7 +321,7 @@ const crearPublicacion = async () => {
       const errores = res.data.errors
       error.value = 'Error: ' + Object.values(errores).flat().join(', ')
     } else {
-      // error.value = res?.data?.error || 'Error inesperado'
+      error.value = res?.data?.error || 'Error inesperado'
       mensaje.value = res?.data?.message || ''
     }
 
@@ -312,9 +344,7 @@ const crearArticulo = async () => {
 
     if (response.status === 201) {
       // Ocultar mensaje automáticamente a los 3 segundos
-      setTimeout(() => {
-        mensaje.value = ''
-      }, 3000)
+ 
     }
   } catch (e) {
     if (e.response && e.response.status === 422) {
@@ -322,9 +352,7 @@ const crearArticulo = async () => {
       // Unir todos los mensajes de error en una sola cadena
       error.value = ' Error ' + Object.values(errores).flat().join(', ')
       // Ocultar error automáticamente a los 5 segundos
-      setTimeout(() => {
-        error.value = ''
-      }, 5000)
+ 
     }
 
     console.error(e)

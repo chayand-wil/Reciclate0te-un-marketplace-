@@ -17,7 +17,7 @@
             @click="toggleDropdown"
             class="flex flex-col items-center text-verdee text-sm hover:opacity-90 focus:outline-none"
           >
-            Categorías
+            Filtrar
           </button>
 
           <!-- Dropdown -->
@@ -48,11 +48,12 @@
           </div>
         </div>
 
-        <router-link to="/recicla0te.com/reutilizador/home">Home</router-link>
+        <router-link to="/recicla0te.com/reutilizador">Home</router-link>
         <router-link to="/recicla0te.com/reutilizador/ranking">Ranking</router-link>
         <router-link to="/recicla0te.com/reutilizador/ecoemp"> Ecoemprendedores </router-link>
 
         <router-link to="/recicla0te.com/reutilizador/nosotros"> Sobre Nosotros </router-link>
+        <router-link to="/recicla0te.com/reutilizador/pub"> prueba </router-link>
 
         <a href="#" class="flex flex-col items-center text-xm hover:opacity-90"> </a>
       </nav>
@@ -60,7 +61,10 @@
       <!-- Apps y Usuario -->
       <div class="flex items-center space-x-4 mr-4 sm:mr-8 lg:mr-16">
         <div>
-          <router-link to="/reutilizador/nosotros">Publicar ahora!</router-link>
+          <router-link to="/recicla0te.com/reutilizador/publicar">Publicar ahora!</router-link>
+        </div>
+        <div>
+          <router-link to="/recicla0te.com/reutilizador/mi_cuenta">Mi Cuenta</router-link>
         </div>
 
         <button aria-label="Apps" class="hover:opacity-90">

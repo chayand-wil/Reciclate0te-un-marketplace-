@@ -44,22 +44,24 @@ return new class extends Migration
         Schema::create('categoria_articulo', function (Blueprint $table) {
             $table->id();
             $table->string('descripcion', 100);
+            $table->string('slug', 50);
         });
-
+        
         Schema::create('tipo_publico', function (Blueprint $table) {
             $table->id();
-            $table->string('tipo', 100);
+            $table->string('nombre', 100);
+            $table->string('slug', 50);
         });
 
         Schema::create('calidad_articulo', function (Blueprint $table) {
             $table->id();
-            $table->string('calidad', 50);
+            $table->string('nombre', 50);
             $table->string('slug', 50);
         });
 
         Schema::create('estado_articulo', function (Blueprint $table) {
             $table->id();
-            $table->string('estado', 50);
+            $table->string('nombre', 50);
             $table->string('slug', 50);
         });
 

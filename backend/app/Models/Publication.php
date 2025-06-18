@@ -6,16 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Publication extends Model
 {
-    protected $table = 'publicacion'; // Nombre de la tabla en la base de datos
-    protected $primaryKey = 'id'; //
-    public $timestamps = true; // Si la tabla no tiene columnas created_at y updated_at
-    protected $fillable = [
-            'id' => '',
-            'id_usuario',
-            'id_articulo',
-            'imagen_url',
-            'id_publicacion_visibilidad',
-    ];
+        protected $table = 'publicacion'; // Nombre de la tabla en la base de datos
+        protected $primaryKey = 'id'; //
+        public $timestamps = true; // Si la tabla no tiene columnas created_at y updated_at
+        protected $fillable = [
+                'id' => '',
+                'id_usuario',
+                'id_articulo',
+                'imagen_url',
+                'id_publicacion_visibilidad',
+        ];
+
+
 
 
         // Schema::create('publicacion', function (Blueprint $table) {
@@ -25,9 +27,24 @@ class Publication extends Model
         //     $table->foreignId('id_publicacion_visibilidad')->constrained('publicacion_visibilidad');
         //     $table->unsignedInteger('cantidad_visualizaciones')->default(0);
         //     $table->timestamps();
-        // });
+        // }); 
 
+        // Una publicación pertenece a un usuario
+        public function user()
+        {
+                return $this->belongsTo(User::class, 'id_usuario');
+        }
 
-
-
+        
+        // Una publicación pertenece a un artículo
+        public function article()
+        {
+                return $this->belongsTo(Articulo::class, 'id_articulo');
+        }
+        
+        // Una publicación tiene una visibilidad
+        // public function visibilidad()
+        // {
+        //         return $this->belongsTo(PublicacionVisibilidad::class, 'id_publicacion_visibilidad');
+        // }
 }

@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PublicationController;
+use App\Http\Controllers\PublicController;
+use App\Models\Publication;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AdminController::class, 'store']);
@@ -39,7 +41,9 @@ Route::middleware(['auth:api'])->group(function () {
         Route::get('/reutilizador-data', function () {
             return response()->json(['data' => 'Solo reutilizador puede ver esto']);
         });
-        
+
+        Route::get('/publications', [PublicationController::class, 'index']);   
+        Route::get('/get_catalogo/{table}', [PublicController::class, 'getCatalogo']);
         Route::post('/articulo', [ArticleController::class, 'store']);   
         Route::post('/publication', [PublicationController::class, 'store']);   
 

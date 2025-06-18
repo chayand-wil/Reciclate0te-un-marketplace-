@@ -1,3 +1,6 @@
 <template>
-  <h1>Ranking</h1>
+
+
+<h1>Mi Perfil</h1>
+
 </template>
