@@ -18,38 +18,52 @@ class PublicationController extends Controller
     // });
 
 
-public function index()  
-{
-    return Publication::all()->load([
-        'user', 
-        'article', 
-    ]);
-}
+    public function getPublication()
+    {
+        $id = request()->route('id');
+        $publication = Publication::find($id);
 
-
-public function store()
-{
-    try {
-        $data = request()->validate([
-            'id_usuario' => 'required|integer|exists:users,id',
-            'id_articulo' => 'required|integer|exists:articulo,id',  
-            'imagen_url' => 'required|string',
-            'id_publicacion_visibilidad' => 'required|integer|exists:publicacion_visibilidad,id',
-        ]);
-
-        $publicacion = Publication::create($data);
-
-        return response()->json([
-            'message' => 'Publicacion creada exitosamente',
-        ], 201);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'message' => 'Error al crear publicación',
-            'error' => $e->getMessage(),   // 👈 esto es clave
-        ], 500);
+        if (!$publication) {
+            return response()->json(['message' => 'Publicación no encontrada'], 404);
+        }
+        return response()->json($publication->load(['user', 'article']));
     }
-}
+
+
+    public function cargarCatalogos() {}
+
+    public function index()
+    {
+        return Publication::all()->load([
+            'user',
+            'article',
+        ]);
+    }
+
+
+
+    public function store(Request $request)
+    {
+        try {
+            $data = $request    ->validate([
+                'id_usuario' => 'required|integer|exists:users,id',
+                'id_articulo' => 'required|integer|exists:articulo,id',
+                'imagen_url' => 'required|string',
+                'id_publicacion_visibilidad' => 'required|integer|exists:publicacion_visibilidad,id',
+            ]);
+
+            $publicacion = Publication::create($data);
+
+            return response()->json([
+                'message' => 'Publicacion creada exitosamente',
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al crear publicación',
+                'error' => $e->getMessage(),   // 👈 esto es clave
+            ], 500);
+        }
+    }
 
 
 

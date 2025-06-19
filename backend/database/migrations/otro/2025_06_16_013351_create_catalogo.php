@@ -9,66 +9,65 @@ return new class extends Migration {
     {
 
 
-
-        Schema::create('usuario_moderador', function (Blueprint $table) {
+ Schema::create('usuario_moderador', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_usuario');
-            $table->foreign('id_usuario')->references('id')->on('users')->onDelete('cascade');
-
+            $table->foreignId('id_usuario')->constrained('users');
         });
 
         Schema::create('solicitud_moderador', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_estado_solicitud')->constrained('estado_solicitud');
         });
 
         Schema::create('usuario_insignia', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_insignia')->constrained('insignias');
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
         });
 
         Schema::create('bodega', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 100);
             $table->foreignId('id_municipio')->constrained('municipio');
             $table->text('detalle_direccion');
         });
 
         Schema::create('clasificadora', function (Blueprint $table) {
             $table->id();
+            $table->string('name', 100);
             $table->foreignId('id_municipio')->constrained('municipio');
             $table->text('detalle_direccion');
         });
 
         Schema::create('user_bodega', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_bodega')->constrained('bodega');
         });
 
         Schema::create('user_clasificadora', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_clasificadora')->constrained('clasificadora');
         });
 
         Schema::create('habilidad_ecoemprendedor', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_habilidad')->constrained('habilidad');
         });
 
         Schema::create('solicitud_ecoemprendedor_activacion', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_estado_solicitud')->constrained('estado_solicitud');
         });
 
         Schema::create('ecoemprendedores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
-            $table->boolean('aprobado');
+            $table->foreignId('id_usuario')->constrained('users');
+            $table->foreignId('id_estado')->constrained('estado_usuario');
         });
 
         Schema::create('articulo', function (Blueprint $table) {
@@ -85,48 +84,51 @@ return new class extends Migration {
 
         Schema::create('publicacion', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_articulo')->constrained('articulo');
             $table->text('imagen_url');
             $table->foreignId('id_publicacion_visibilidad')->constrained('publicacion_visibilidad');
-            $table->unsignedInteger('cantidad_visualizaciones')->default(0);
+            $table->integer('cantidad_visualizaciones')->default(0);
             $table->timestamps();
         });
 
         Schema::create('publicacion_like', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_publicacion')->constrained('publicacion');
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
+            $table->timestamps();
         });
 
         Schema::create('publicacion_comentario', function (Blueprint $table) {
             $table->id();
             $table->text('texto_comentario');
             $table->foreignId('id_publicacion')->constrained('publicacion');
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
+            $table->timestamps();
         });
 
         Schema::create('articulo_solicitud', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_estado_adquisicion')->constrained('articulo_estado_adquisicion');
+            $table->foreignId('id_estado_solicitud')->constrained('estado_solicitud');
             $table->foreignId('id_publicacion')->constrained('publicacion');
-            $table->foreignId('id_usuario_nuevo')->constrained('users')->onDelete('cascade');
-            $table->dateTime('fecha_solicitado');
+            $table->foreignId('id_usuario_nuevo')->constrained('users');
+            $table->timestamps();
         });
 
         Schema::create('notificacion_usuario', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
             $table->string('motivo', 255);
             $table->text('detalle_notificacion');
+            $table->timestamps();
         });
 
         Schema::create('denuncia_usuario', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users')->onDelete('cascade');
+            $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_motivo_denuncia')->constrained('motivo_denuncia');
             $table->foreignId('id_estado_denuncia')->constrained('estado_denuncia');
-            $table->dateTime('fecha_reporte');
+            $table->timestamps();
         });
 
         Schema::create('denuncia_publicacion', function (Blueprint $table) {
@@ -134,9 +136,21 @@ return new class extends Migration {
             $table->foreignId('id_publicacion')->constrained('publicacion');
             $table->foreignId('id_motivo_denuncia')->constrained('motivo_denuncia');
             $table->foreignId('id_estado_denuncia')->constrained('estado_denuncia');
-            $table->dateTime('fecha_reporte');
+            $table->timestamps();
         });
     }
+
+
+
+
+
+
+
+
+ 
+
+     
+    
 
     public function down(): void
     {

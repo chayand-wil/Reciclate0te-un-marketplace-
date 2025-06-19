@@ -163,6 +163,9 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+    
+
+
 
 
  Schema::create('usuario_moderador', function (Blueprint $table) {
@@ -294,11 +297,8 @@ return new class extends Migration
             $table->foreignId('id_estado_denuncia')->constrained('estado_denuncia');
             $table->timestamps();
         });
+    
     }
- 
-
-
-
 
 
 
@@ -309,43 +309,26 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('denuncia_publicacion');
-        Schema::dropIfExists('denuncia_usuario');
-        Schema::dropIfExists('notificacion_usuario');
-        Schema::dropIfExists('articulo_solicitud');
-        Schema::dropIfExists('publicacion_comentario');
-        Schema::dropIfExists('publicacion_like');
-        Schema::dropIfExists('publicacion');
-        Schema::dropIfExists('articulo');
-        Schema::dropIfExists('ecoemprendedores');
-        Schema::dropIfExists('solicitud_ecoemprendedor_activacion');
-        Schema::dropIfExists('habilidad_ecoemprendedor');
-        Schema::dropIfExists('user_clasificadora');
-        Schema::dropIfExists('user_bodega');
-        Schema::dropIfExists('clasificadora');
-        Schema::dropIfExists('bodega');
-        Schema::dropIfExists('usuario_insignia');
-        Schema::dropIfExists('solicitud_moderador');
-        Schema::dropIfExists('usuario_moderador');
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('nivel');
-        Schema::dropIfExists('insignias');
-        Schema::dropIfExists('estado_usuario');
-        Schema::dropIfExists('habilidad');
-        Schema::dropIfExists('role_users');
-        Schema::dropIfExists('publicacion_visibilidad');
-        Schema::dropIfExists('estado_solicitud');
-        Schema::dropIfExists('articulo_estado_adquisicion');
-        Schema::dropIfExists('estado_articulo');
-        Schema::dropIfExists('calidad_articulo');
-        Schema::dropIfExists('tipo_publico');
-        Schema::dropIfExists('categoria_articulo');
-        Schema::dropIfExists('estado_denuncia');
-        Schema::dropIfExists('motivo_denuncia');
-        Schema::dropIfExists('municipio');
-        Schema::dropIfExists('departamento');
-        Schema::dropIfExists('pais');
-    
+    Schema::dropIfExists('sessions');
+    Schema::dropIfExists('password_reset_tokens');
+    Schema::dropIfExists('users');
+    Schema::dropIfExists('nivel');
+    Schema::dropIfExists('insignias');
+    Schema::dropIfExists('estado_usuario');
+    Schema::dropIfExists('habilidad');
+    Schema::dropIfExists('role_users');
+    Schema::dropIfExists('publicacion_visibilidad');
+    Schema::dropIfExists('estado_solicitud');
+    Schema::dropIfExists('articulo_estado_adquisicion');
+    Schema::dropIfExists('estado_articulo');
+    Schema::dropIfExists('calidad_articulo');
+    Schema::dropIfExists('tipo_publico');
+    Schema::dropIfExists('categoria_articulo');
+    Schema::dropIfExists('estado_denuncia');
+    Schema::dropIfExists('motivo_denuncia');
+    Schema::dropIfExists('municipio');
+    Schema::dropIfExists('departamento');
+    Schema::dropIfExists('pais');
 }
 
     

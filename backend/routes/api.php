@@ -8,6 +8,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicController;
+use App\Http\Controllers\SolicitudController;
 use App\Models\Publication;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -42,8 +43,10 @@ Route::middleware(['auth:api'])->group(function () {
             return response()->json(['data' => 'Solo reutilizador puede ver esto']);
         });
 
+        Route::get('/publication/{id}', [PublicationController::class, 'getPublication']);   
         Route::get('/publications', [PublicationController::class, 'index']);   
         Route::get('/get_catalogo/{table}', [PublicController::class, 'getCatalogo']);
+        Route::post('/articulo_solicitud', [SolicitudController::class, 'store']);   
         Route::post('/articulo', [ArticleController::class, 'store']);   
         Route::post('/publication', [PublicationController::class, 'store']);   
 

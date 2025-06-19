@@ -24,7 +24,6 @@ public function store(Request $request)
         'password' => bcrypt($request->password),
         'id_rol'   => $request->id_rol,
     ]);
-
     // Obtener el ID del nuevo usuario
     $lastInsertedId = $user->id;
 

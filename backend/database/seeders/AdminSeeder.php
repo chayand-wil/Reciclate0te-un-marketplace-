@@ -28,12 +28,37 @@ class AdminSeeder extends Seeder
         //     $table->rememberToken();
         // });
 
-        User::create([
-            'name' => 'Jon',
-            'email' => 'jon@wil.com',
-            'password' => bcrypt('admin123'),
-            'id_rol' => 1,
-        ]);
+ $user = new \App\Models\User();
+$user->name = 'admin';
+$user->last_name = 'jon';
+$user->email = 'admin@wil.com';
+$user->password = bcrypt('admin123');
+$user->dpi = '1234567890103';
+$user->id_estado = 1;
+$user->id_rol = 1;
+$user->id_nivel = 1;
+$user->cantidad_puntos = 0;
+$user->id_municipio = 1;
+$user->medio_contacto = 'insta';
+$user->detalle_direccion = 'Zona 1';
+$user->save();
+
+$user = new \App\Models\User();
+$user->name = 'reutilizador';
+$user->last_name = 'reu';
+$user->email = 'reu@wil.com';
+$user->password = bcrypt('admin123');
+$user->dpi = '1234567893';
+$user->id_estado = 1;
+$user->id_rol = 4;
+$user->id_nivel = 1;
+$user->cantidad_puntos = 0;
+$user->medio_contacto = 'insta';
+$user->id_municipio = 1;
+$user->detalle_direccion = 'Zona 8';
+$user->save();
+
+
 
 
 
