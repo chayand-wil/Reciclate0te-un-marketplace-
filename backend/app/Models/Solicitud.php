@@ -49,10 +49,5 @@ class Solicitud extends Model
         return $this->belongsTo(EstadoSolicitud::class, 'id_estado_solicitud');
     }
 
-    public function scopePendientes($query)
-    {
-        return $query->whereHas('estadoSolicitud', function ($q) {
-            $q->where('slug', 'pendiente');
-        });
-    }
+ 
 }

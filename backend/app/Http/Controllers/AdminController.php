@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -69,6 +68,44 @@ public function index() //jala todos los usuarios
     // return User::all();
     return User::select('id', 'name', 'email', 'id_rol', 'created_at')->get();
 }
+
+
+
+
+public function userProfilebyPub($id){
+    //busca en publiaciones al usuario que creo la publicacion
+    $user = User::with([
+        'estado',
+        'rol',
+        'nivel',
+        'municipio'
+    ])->whereHas('publications', function ($query) use ($id) {
+        $query->where('id', $id);
+    })->first();
+    if (!$user) {
+        return response()->json(['message' => 'Usuario no encontrado'], 404);
+    }
+    return response()->json($user);
+ 
+}
+
+
+
+public function userProfile($id){
+    $user = User::with([
+        'estado',
+        'rol',
+        'nivel',
+        'municipio'
+    ])->find($id);
+
+    if (!$user) {
+        return response()->json(['message' => 'Usuario no encontrado'], 404);
+    }
+
+    return response()->json($user);
+}
+
 
 
 

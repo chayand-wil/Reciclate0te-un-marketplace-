@@ -30,7 +30,7 @@ Route::middleware(['auth:api'])->group(function () {
         });
         Route::post('/users', [AdminController::class, 'store']);
         Route::get('/users', [AdminController::class, 'index']);   
-        Route::get('/uniqueuser/{id}', [AdminController::class, 'uniqueUser']);   
+        // Route::get('/uniqueuser/{id}', [AdminController::class, 'uniqueUser']);   
         Route::post('/updateUser', [AdminController::class, 'updateUser']);   
         Route::get('/deleteUser/{id}', [AdminController::class, 'destroy']);   
         
@@ -54,7 +54,12 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('/articulo_solicitud', [SolicitudController::class, 'store']);   
         Route::get('/getMisSolicitudes/{id_user}', [SolicitudController::class, 'getMisSolicitudes']);   
         Route::patch('/getMisSolicitudes/{id_user}', [SolicitudController::class, 'updateSolicitud']);   
+        Route::get('/getSolicitados/{id_user}', [SolicitudController::class, 'getSolicitados']);   
+
+
         Route::post('/articulo', [ArticleController::class, 'store']);   
+        Route::get('/uniqueuser/{id}', [AdminController::class, 'userProfile']);   
+        Route::get('/userProfilebyPub/{id}', [AdminController::class, 'userProfilebyPub']);   
 
  
     });

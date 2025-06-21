@@ -21,4 +21,14 @@ class Estado_Adquicision extends Model
     {
         return $this->hasMany(Articulo::class, 'id_articulo_estado_adquisicion');
     }
+
+    // Puedes agregar otros métodos o relaciones según sea necesario
+    public function publicaciones()
+    {
+        $pub = $this->hasMany(Publication::class, 'id_estado_adquisicion')->with(['article', 'user']);
+        return $pub;
+
+    }
+
 }
+

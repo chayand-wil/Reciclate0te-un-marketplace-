@@ -46,6 +46,17 @@ class Publication extends Model
                 $article->with(['categoria', 'tipoPublico', 'calidadArticulo', 'estadoArticulo', 'estadoAdquisicion']);
                 return $article;
         }
+
+
+        // DB::table('articulo_estado_adquisicion')->insert([
+        //     ['nombre' => 'Disponible', 'slug' => 'disponible'],
+        //     ['nombre' => 'Solicitado-disponible', 'slug' => 'solicitado-disponibe'],
+        //     ['nombre' => 'En proceso de intercambio', 'slug' => 'intecambio'],
+        //     ['nombre' => 'Intercambio completado', 'slug' => 'completado'],
+        // ]);
+
+        // publicaiones 
+
         // Una publicación tiene una visibilidad
         public function visibility()
         {

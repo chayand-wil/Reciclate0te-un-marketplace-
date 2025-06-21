@@ -64,10 +64,29 @@ class SolicitudController extends Controller
         }
     }
 
+    public function getSolicitados($id_user)
+    {
+        try {
+            // Obtener todas las solicitudes donde el usuario sea el solicitante
+            $solicitudes = Solicitud::where('id_usuario_nuevo', $id_user)
+                ->with(['publication', 'user', 'estadoSolicitud'])
+                ->get();
+
+            return response()->json($solicitudes);
+            return response()->json($id_user);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al obtener solicitudes',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+   
+
     public function getMisSolicitudes($id_user)
     {
         try {
-            // Obtener todas las solicitudes donde la publicación sea del usuario especificado
+            // entra a todsa mis solicitudes y  
             $solicitudes = Solicitud::whereHas('publication', function ($query) use ($id_user) {
                 $query->where('id_usuario', $id_user);
             })->with(['publication', 'user', 'estadoSolicitud'])->get();

@@ -18,7 +18,7 @@ class PublicationController extends Controller
     //     $table->timestamps();
     // });
 
-
+    // no se se usa aun
     public function getPublication()
     {
         $id = request()->route('id');
@@ -43,6 +43,10 @@ class PublicationController extends Controller
         return response()->json($publications->load('article'));
     }
 
+
+
+
+    
     public function index()
     {
         return Publication::all()->load([
