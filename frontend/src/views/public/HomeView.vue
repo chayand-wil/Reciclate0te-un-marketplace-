@@ -1,54 +1,50 @@
 <template>
+  <div class="mt-36 mb-10  flex items-center justify-center ">
     <div
-    class="mt-32 w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white"
-  >
-    <!-- BARRA   categoriasss -->
-    <div
-      class="flex space-x-8 px-6 border-b-2 border-indigo-500 w-fit mx-auto text-sm font-semibold text-white"
+      class="w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white"
     >
-      <button class="pb-2 border-b-2 border-indigo-500">Tailwind CLI</button>
-      <button class="pb-2 hover:border-b-2 hover:border-white">Using PostCSS</button>
-      <button class="pb-2 hover:border-b-2 hover:border-white">Framework Guides</button>
-      <button class="pb-2 hover:border-b-2 hover:border-white">Play CDN</button>
+      <!-- BARRA DE CATEGORÍAS -->
+      <div
+        class="flex space-x-8 px-6 border-b-2 border-indigo-500 w-fit mx-auto text-sm font-semibold text-white"
+      >
+        <button class="pb-2 border-b-2 border-indigo-500">Tailwind CLI</button>
+        <button class="pb-2 hover:border-b-2 hover:border-white">Using PostCSS</button>
+        <button class="pb-2 hover:border-b-2 hover:border-white">Framework Guides</button>
+        <button class="pb-2 hover:border-b-2 hover:border-white">Play CDN</button>
+      </div>
     </div>
-
-
-    
   </div>
 
-  
-  <div class="mt-10 mr-20 ml-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-
+  <div class=" mr-24 ml-24 grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-8">
     <PublicationCard
       v-for="item in publications"
       :key="item.id"
       :publication="item"
+      @cargar-Publication="cargarPublication"
     />
   </div>
-
-
 </template>
 
- 
-
- 
-
 <script setup>
-import { ref, onMounted } from 'vue'
+import { inject, ref, onMounted } from 'vue'
 import api from '../../axios'
 import { useRouter } from 'vue-router'
 import PublicationCard from '@/components/PublicationCard.vue'
 
+// Usuario ref for passing to PublicationView
+const usuario = ref(null)
+
 const mensaje = ref('')
 const error = ref('')
+const emit = defineEmits(['cargarPublication'])
 
 const router = useRouter()
 const publications = ref([])
 
-const publication = ref({
-  id_articulo: null,
-  imagen_url: null,
-})
+// const publication = ref({
+//   id_articulo: null,
+//   imagen_url: null,
+// })
 
 onMounted(async () => {
   try {
@@ -56,6 +52,7 @@ onMounted(async () => {
     if (res.data.rol.slug !== 'reutilizador') {
       router.push('/')
     } else {
+      usuario.value = res.data
       await cargarPublications()
     }
   } catch (e) {
@@ -71,13 +68,13 @@ const cargarPublications = async () => {
     error.value = 'Error al cargar publicaciones'
   }
 }
+
+const cargarPublication = async (id) => {
+  router.push({ name: 'pub', params: { id } })
+}
 </script>
 
-
-
-
-
- <!-- {
+<!-- {
         "id": 1,
         "id_usuario": 1,
         "id_articulo": 1,

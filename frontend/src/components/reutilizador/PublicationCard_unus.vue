@@ -1,4 +1,4 @@
-<template>
+ <template>
   <!-- Tarjeta de publicación -->
   <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-lg text-white">
     <!-- Cabecera -->
@@ -9,9 +9,8 @@
 
     <!-- Descripción -->
     <div class="px-4 py-1 text-sm text-white">
-      <p>{{ publication.description }}</p>  
     </div>
-    
+
     <!-- Imagen con overlay -->
     <div @click.stop="emitirDetalle" class="relative w-full group">
       <img
@@ -34,35 +33,22 @@
 
     <!-- Estado -->
     <div class="mt-2 px-4 text-sm pb-1 text-green-400">
-      Estado: {{ publication.article.estado_adquisicion.nombre }}
+      Estado: {{ publication.article.estado_articulo }}
     </div>
-
-    <!-- Acciones -->
-    <div class="px-4 py-3 flex justify-between text-sm border-t border-gray-700">
-      <button @click="emitirDetalle" class="flex items-center space-x-1 hover:text-blue-400">
-        Ver mas detalles
-      </button>
-
-      <button class="flex items-center space-x-1 hover:text-purple-400">
-        <span></span><span>🔗 Compartir</span>
-      </button>
-    </div>
+  
   </div>
 </template>
 
 <script setup>
 const { publication } = defineProps(['publication'])
 const emit = defineEmits(['cargar-Publication'])
- 
-console.log('Publicación:', publication)
 
 function emitirDetalle() {
   emit('cargar-Publication', publication.id)
 }
 
-   
-// const handleImageClick = () => {
-//   alert('Imagen clickeada: ' + publication.id)
-  
-// }
+const handleImageClick = () => {
+  alert('Imagen clickeada: ' + publication.id)
+  // Aquí podrías abrir un modal, lanzar un input de archivo, etc.
+}
 </script>

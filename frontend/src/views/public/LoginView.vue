@@ -143,9 +143,11 @@ const login = async () => {
 
       const token = response.data.access_token
       const role = response.data.user.rol.slug
+      const id = response.data.user.id
 
       localStorage.setItem('token', token)
       localStorage.setItem('role', role)
+      localStorage.setItem('id', id)
 
       switch (role) {
               case 'admin':

@@ -9,8 +9,6 @@ use Illuminate\Validation\ValidationException;
 
 class SolicitudController extends Controller
 {
-    //
-
 
     public function store(Request $request)
     {
@@ -64,5 +62,42 @@ class SolicitudController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function getMisSolicitudes($id_user)
+    {
+        try {
+            // Obtener todas las solicitudes donde la publicación sea del usuario especificado
+            $solicitudes = Solicitud::whereHas('publication', function ($query) use ($id_user) {
+                $query->where('id_usuario', $id_user);
+            })->with(['publication', 'user', 'estadoSolicitud'])->get();
+
+            return response()->json($solicitudes);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al obtener solicitudes',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    public function updateSolicitud(Request $request, $id)
+    {
+        $solicitud = Solicitud::findOrFail($id);
+
+        $accion = $request->accion;
+
+        if ($accion === 'aceptada') {
+            $solicitud->id_estado_solicitud = 2; // ID correspondiente a 'aceptada'
+        } elseif ($accion === 'rechazada') {
+            $solicitud->id_estado_solicitud = 3; // ID correspondiente a 'rechazada'
+        } elseif ($accion === 'pendiente') {
+            $solicitud->id_estado_solicitud = 1; // ID correspondiente a 'pendiente'
+        }
+
+        $solicitud->save();
+
+        return response()->json(['message' => 'Solicitud actualizada exitosamente']);
     }
 }

@@ -13,6 +13,8 @@ use App\Models\Publication;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AdminController::class, 'store']);
+Route::get('/get_catalogos/{table}', [PublicController::class, 'getCatalogo']);
+Route::get('/get_catalogos_articles', [PublicController::class, 'getCatalogoArticles']);
 
 
 
@@ -44,11 +46,15 @@ Route::middleware(['auth:api'])->group(function () {
         });
 
         Route::get('/publication/{id}', [PublicationController::class, 'getPublication']);   
+        Route::post('/publication', [PublicationController::class, 'store']);   
+        Route::get('/publications/{id}', [PublicationController::class, 'getPubs']);   
         Route::get('/publications', [PublicationController::class, 'index']);   
         Route::get('/get_catalogo/{table}', [PublicController::class, 'getCatalogo']);
+        Route::get('/get_catalogo/{id}/{table}', [PublicController::class, 'getTableById']);
         Route::post('/articulo_solicitud', [SolicitudController::class, 'store']);   
+        Route::get('/getMisSolicitudes/{id_user}', [SolicitudController::class, 'getMisSolicitudes']);   
+        Route::patch('/getMisSolicitudes/{id_user}', [SolicitudController::class, 'updateSolicitud']);   
         Route::post('/articulo', [ArticleController::class, 'store']);   
-        Route::post('/publication', [PublicationController::class, 'store']);   
 
  
     });

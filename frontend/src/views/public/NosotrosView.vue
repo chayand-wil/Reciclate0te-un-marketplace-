@@ -1,5 +1,6 @@
 <template>
 
+  <div class="mt-1 mb-10  flex items-center justify-center ">
 
      <div class="mt-40 w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white">
 
@@ -37,6 +38,7 @@
         </p>
       </section>
     </div>
+  </div>
   </div>
 </template>
 

@@ -53,7 +53,6 @@
         <router-link to="/recicla0te.com/reutilizador/ecoemp"> Ecoemprendedores </router-link>
 
         <router-link to="/recicla0te.com/reutilizador/nosotros"> Sobre Nosotros </router-link>
-        <router-link to="/recicla0te.com/reutilizador/pub"> prueba </router-link>
 
         <a href="#" class="flex flex-col items-center text-xm hover:opacity-90"> </a>
       </nav>

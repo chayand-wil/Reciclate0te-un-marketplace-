@@ -6,33 +6,59 @@ use App\Models\User;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
+
 {
+
 public function store(Request $request)
 {
-    $request->validate([
-        'name'     => 'required|string|max:255',
-        'email'    => 'required|email|unique:users,email',
-        'password' => 'required|min:6',
-        'id_rol'   => 'required|in:1,2,3,4',
-    ]);
+    try {
+        $data = $request->validate([
+            'name' => 'required|string|max:100',
+            'last_name' => 'required|string|max:100',
+            'email' => 'required|string|email|max:100|unique:users,email',
+            'password' => 'required|string|min:8',
+            'dpi' => 'required|string|max:20|unique:users,dpi',
+            'id_estado' => 'required|exists:estado_usuario,id',
+            'id_rol' => 'required|exists:role_users,id',
+            'id_nivel' => 'required|exists:nivel,id',
+            'cantidad_puntos' => 'nullable|integer|min:0',
+            'medio_contacto' => 'required|string|max:200',
+            'id_genero' => 'required|exists:genero,id',  
+            'fecha_nacimiento' => 'nullable|date',
+            'id_municipio' => 'required|exists:municipio,id',
+            'detalle_direccion' => 'required|string',
+        ],
+        [
+            'email.unique' => 'El correo electrónico ya está en uso.',
+            'dpi.unique' => 'El DPI ya está en uso.',   
+        ]);
 
-    $user = User::create([
-        'name'     => $request->name,
-        'email'    => $request->email,
-        'password' => bcrypt($request->password),
-        'id_rol'   => $request->id_rol,
-    ]);
-    // Obtener el ID del nuevo usuario
-    $lastInsertedId = $user->id;
+        // 🔐 Hash correcto
+        $data['password'] = Hash::make($data['password']);
 
-    // Puedes retornar el ID o usarlo como necesites
-    return response()->json([
-        'message' => 'Usuario creado exitosamente.',
-        'user_id' => $lastInsertedId
-    ]);
+        $user = User::create($data);
+
+        return response()->json([
+            'message' => 'Usuario creado exitosamente.',
+            // 'message' => $data,
+        ], 201);
+
+    } catch (ValidationException $e) {
+        return response()->json([
+            'message' => 'Error de validación',
+            'errors' => $e->errors(),
+        ], 422);
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Error al crear al usuario',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
 }
+
   
 
 

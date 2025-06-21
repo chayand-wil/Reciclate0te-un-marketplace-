@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\EstadoSolicitud;
 use App\Models\Publication;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
@@ -33,13 +34,25 @@ class Solicitud extends Model
 
     public function publication()
     {
-        return $this->belongsTo(Publication::class, 'id_publicacion');
+        $pub= $this->belongsTo(Publication::class, 'id_publicacion');
+        $pub->with(['article']);
+        return $pub;
     }
 
-    public function userSolicitud()
+    // public function userSolicitud()
+    public function user()
     {
         return $this->belongsTo(User::class, 'id_usuario_nuevo');
     }
-    
+    public function estadoSolicitud()
+    {
+        return $this->belongsTo(EstadoSolicitud::class, 'id_estado_solicitud');
+    }
 
+    public function scopePendientes($query)
+    {
+        return $query->whereHas('estadoSolicitud', function ($q) {
+            $q->where('slug', 'pendiente');
+        });
+    }
 }

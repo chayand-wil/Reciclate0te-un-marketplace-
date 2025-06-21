@@ -14,6 +14,32 @@
 <script setup>  
 import AppHeader from '../components/reutilizador/AppHeader.vue'
 // import AppSidebar from '../components/reutilizador/AppSidebar.vue'
+
+import { provide, ref, onMounted } from 'vue'
+import api from '../axios'
+import { useRouter } from 'vue-router' 
+
+// Usuario ref for passing to PublicationView
+const usuario = ref(null)
+const router = useRouter() 
+ 
+onMounted(async () => {
+  try {
+    const res = await api.get('/me')
+    if (res.data.rol.slug !== 'reutilizador') {
+      router.push('/')
+    } else {
+      usuario.value = res.data
+    }
+  } catch (e) {
+    router.push('/')
+  }
+})
+
+
+provide('usuarioLogueado', usuario)
+ 
+
 </script>
 
 
@@ -36,12 +62,13 @@ import AppHeader from '../components/reutilizador/AppHeader.vue'
 }
 
 .content {
-  display: grid;
-  place-items: center;
-  height: 100%;
+ 
+  justify-content: center;
+  align-items: flex-start;
   width: 100%;
+  height: 100%;
   overflow: auto;
-  color: white; 
+  color: white;
 }
 
 

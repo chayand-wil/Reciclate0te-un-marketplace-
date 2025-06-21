@@ -20,6 +20,7 @@ import PublicationView from '@/views/public/PublicationView.vue'
 import InfoUserView from '@/views/public/InfoUserView.vue'
 import DetallePublicationLayoutView from '@/layout/DetallePublicationLayoutView.vue'
 import MiCuentaLayoutView from '@/layout/MiCuentaLayoutView copy.vue'
+import MisPubsView from '@/views/reutilizador/otros/MisPubsView.vue'
 
 const routes = [
   // Login
@@ -73,11 +74,11 @@ const routes = [
       { path: 'ecoemp', name: 'ecoemp', component: EcoempView },
       { path: 'publicar', name: 'publicar', component: NewPublicationView },
       {
-        path: 'pub',
+        path: 'pub/:id/',
         component: DetallePublicationLayoutView,
         children: [
-          { path: '', name: 'pub', component: PublicationView },
-          { path: 'info_user', name: 'info_user', component: InfoUserView },
+          { path: '', name: 'pub', component: PublicationView, props:true },
+          { path: 'info_user', name: 'info_user', component: InfoUserView, props:true },
         ],
       },
       {
@@ -87,6 +88,8 @@ const routes = [
           { path: '', name: 'mi_cuenta', component: MiPerfilView },
           { path: 'adquisiciones', name: 'adquisiciones', component: AdquisicionesView },
           { path: 'solicitudes', name: 'solicitudes', component: SolicitudesView },
+          { path: 'mis_pubs', name: 'mis_pubs', component: MisPubsView },
+          { path: 'mis_pub', name: 'mis_pub', component: MisPubsView },
         ],
       },
 
@@ -118,8 +121,8 @@ router.beforeEach((to, from, next) => {
     (token && to.name === 'register') ||
     (token && to.name === 'visitor')
   ) {
-    if (role === 'admin') return next({ name: 'admin' })
-    if (role === 'reutilizador') return next({ name: 'reutilizador' })
+      if (role === 'admin') return next({ name: 'admin' })
+      if (role === 'reutilizador') return next({ name: 'reutilizador' })
   }
 
   // Control por roles

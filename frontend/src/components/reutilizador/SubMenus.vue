@@ -1,8 +1,8 @@
 <template>
  
-
+  <div class="mt-36 mb-10  flex items-center justify-center ">
   <div
-    class="mt-32 w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white"
+    class="w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white"
   >
     <!-- BARRA   categoriasss -->
     <div
@@ -11,9 +11,11 @@
       <button @click="router.push('/recicla0te.com/reutilizador/mi_cuenta')" class="pb-2 hover:border-b-2 hover:border-white">Mi perfil</button>
       <button @click="router.push('/recicla0te.com/reutilizador/mi_cuenta/adquisiciones')" class="pb-2 hover:border-b-2 hover:border-white">Mis adquisiciones</button>
       <button @click="router.push('/recicla0te.com/reutilizador/mi_cuenta/solicitudes')" class="pb-2 hover:border-b-2 hover:border-white">Mis solicitudes</button>
+      <button @click="router.push('/recicla0te.com/reutilizador/mi_cuenta/mis_pubs')" class="pb-2 hover:border-b-2 hover:border-white">Mis publicaciones</button>
 
 
 
+    </div>
     </div>
   </div>
 </template>

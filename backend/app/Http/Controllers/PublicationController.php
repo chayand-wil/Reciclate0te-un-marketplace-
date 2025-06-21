@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Publication;
+use App\Models\Articulo;
 use Illuminate\Http\Request;
 
 class PublicationController extends Controller
@@ -32,6 +33,16 @@ class PublicationController extends Controller
 
     public function cargarCatalogos() {}
 
+    public function getPubs($id)
+    {
+        $publications = Publication::where('id_usuario', $id)->get();
+
+        if ($publications->isEmpty()) {
+            return response()->json(['message' => 'No se cuentan con publicaciones'], 404);
+        }
+        return response()->json($publications->load('article'));
+    }
+
     public function index()
     {
         return Publication::all()->load([
@@ -45,7 +56,7 @@ class PublicationController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = $request    ->validate([
+            $data = $request->validate([
                 'id_usuario' => 'required|integer|exists:users,id',
                 'id_articulo' => 'required|integer|exists:articulo,id',
                 'imagen_url' => 'required|string',

@@ -35,6 +35,11 @@ class BaseCatalogosSeeder extends Seeder
             ['nombre' => 'Aceptada', 'slug' => 'aceptada'],
             ['nombre' => 'Rechazada', 'slug' => 'rechazada'],
         ]);
+        DB::table('genero')->insert([
+            ['nombre' => 'Masculino', 'slug' => 'masculino'],
+            ['nombre' => 'Femenino', 'slug' => 'femenino'],
+            ['nombre' => 'Mita mita', 'slug' => 'mita_mita'],
+        ]);
 
         DB::table('categoria_articulo')->insert([
             ['nombre' => 'Tecnología', 'slug' => 'tecno'],

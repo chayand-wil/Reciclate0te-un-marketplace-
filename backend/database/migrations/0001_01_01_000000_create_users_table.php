@@ -18,6 +18,11 @@ return new class extends Migration
             $table->id();
             $table->string('nombre', 100);
         });
+        Schema::create('genero', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 100);
+            $table->string('slug', 50);
+        });
 
         Schema::create('departamento', function (Blueprint $table) {
             $table->id();
@@ -129,6 +134,8 @@ return new class extends Migration
             $table->foreignId('id_nivel')->constrained('nivel');
             $table->integer('cantidad_puntos')->default(0);
             $table->foreignId('id_municipio')->constrained('municipio');
+            $table->foreignId('id_genero')->constrained('genero');
+            $table->date('fecha_nacimiento')->nullable();
             $table->text('detalle_direccion');
             $table->string('medio_contacto', 200);
             $table->timestamps();

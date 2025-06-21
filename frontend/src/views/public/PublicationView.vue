@@ -1,67 +1,214 @@
- 
-
-
-
 <template>
-    
-    <div 
-    class="mt-16 w-full max-w-2xl bg-white/10 backdrop-blur-2xl rounded-2xl p-10 shadow-lg text-white"
-  >
-    <!-- Encabezado -->
-    <div class="text-center mb-10">
-      <h1 class="text-3xl font-semibold text-gray-900">iPhone 16 Pro Max Clear Case with MagSafe</h1>
-      <p class="text-lg text-gray-700 mt-2">$49.00</p>
-      <p class="text-sm text-gray-500">or $4.08/mo. for 12 mo.</p>
-      <p class="text-sm text-indigo-600 font-medium mt-1">Get 3% Daily Cash with Apple Card</p>
+  <!-- Contenedor flotante MENSAJES -->
+  <div class="fixed top-20 right-40 z-50 space-y-4 w-[300px]">
+    <!-- Mensaje de éxito -->
+    <div
+      v-if="mensaje"
+      class="bg-white/20 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-xl text-verdee"
+    >
+      {{ mensaje }}
     </div>
 
+    <!-- Mensaje de error de validación -->
+    <div
+      v-if="error"
+      class="bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-xl text-red-600"
+    >
+      {{ error }}
+    </div>
+  </div>
+
+  <!-- UNA PUBLICACION - DETALLE -->
+<div class="mt-4 w-full max-w-[900px] mx-auto bg-white/10 backdrop-blur-2xl rounded-2xl p-6 shadow-lg text-white">
+
+    <!-- Encabezado -->
+    <div class="text-center mb-10">
+      <h1 class="text-3xl font-semibold text-gray-900">{{ publication?.article?.nombre }}</h1>
+      <p class="text-lg text-white mb-2">Descripcion: {{ publication?.article?.descripcion }}</p>
+      
+      
+    </div>
+    
+    <p>{{ formatFecha(publication?.created_at) }}</p>
+    
     <!-- Contenido principal -->
-    <div class="flex flex-col lg:flex-row gap-16 max-w-6xl w-full">
+<div class="flex mt-4 flex-col lg:flex-row gap-4 w-full max-w-[1600px]">
+
+
+
       <!-- Imagen del producto -->
       <div class="flex-1 flex justify-center">
-        <img src="https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/MT2H3?wid=600&hei=600&fmt=jpeg&qlt=95&.v=1694026831395" alt="iPhone Clear Case" class="w-80 h-auto rounded-xl shadow" />
+        <img
+          :src="publication?.imagen_url"
+          alt="image del articulo"
+          class="w-400 h-auto rounded-xl shadow"
+        />
       </div>
 
       <!-- Información y opciones -->
       <div class="flex-1 space-y-6">
         <!-- Selector de tamaño -->
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Size</label>
-          <select class="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-700">
-            <option>iPhone 16 Pro Max</option>
-          </select>
-        </div>  
+          <label class="block text-xl font-medium text-gray-100 mb-1">Estado: </label>
+          <p class="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-100">
+            {{ estado.nombre }}
+          </p>
+          <br>
+          <label class="block text-xl font-medium text-gray-100 mb-1">Calidad: </label>
+          <p class="w-full border border-gray-300 rounded-md px-4 py-2 text-gray-100">
+            {{ calidad.nombre }}
+          </p>
+          
+        </div>
 
         <!-- Entrega -->
         <div>
-          <p class="text-sm text-gray-700"><strong>Delivery:</strong> In Stock</p>
-          <p class="text-sm text-indigo-600">Free Shipping · <span class="underline cursor-pointer">Get delivery dates</span></p>
+          <p class="text-xl text-gray-400"><strong>Para:</strong> {{ publico.nombre }}</p>
+          <p class="text-sm text-indigo-600">
+              <span class="underline cursor-pointer">Categoria: {{categoria.nombre}}</span>
+          </p>
         </div>
 
         <!-- Recoger -->
         <div>
-          <p class="text-sm text-gray-700"><strong>Pickup:</strong> <span class="underline cursor-pointer">Solicitar</span></p>
+          <p class="text-2xl text-gray-20">
+            <strong>Recoger  en: </strong>
+            <span class="underline cursor-pointer"   >{{ ubicacion.nombre }}</span>
+          </p>
         </div>
 
         <!-- Botones -->
         <div class="flex flex-col gap-3">
-          <button class="bg-black text-white py-3 rounded-md hover:bg-gray-800">Solicitar</button>
-          <button class="bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700">Cancelar Solicitud</button>
+          <button
+            @click="solicitarArticulo"
+            class="bg-black text-white py-3 rounded-md hover:bg-gray-800"
+          >
+            Solicitar Artículo
+          </button>
+          <button class="bg-indigo-600 text-white py-3 rounded-md hover:bg-indigo-700">
+            Cancelar Solicitud
+          </button>
         </div>
-
- 
       </div>
     </div>
+    <br />
+    <p class="text-sm text-white">Detalles: {{ publication?.article?.detalles }}</p>
   </div>
+  <br />
+
 </template>
 
-
 <script setup>
+import { inject } from 'vue'
+import { ref, onMounted } from 'vue'
+import api from '../../axios'
+import { useRoute } from 'vue-router'
+
+// Props: si viene como tarjeta
+const props = defineProps({
+  publication: Object,
+  user: Object,
+})
  
+const emit = defineEmits(['enviar-id'])
+const route = useRoute()
+const publication = ref(props.publication ?? null)
+const user = ref(props.user ?? null)
+const article = ref()
+const mensaje = ref('')
+const error = ref('')
+const usuarioLogueado = inject('usuarioLogueado')
+
+const categoria = ref('')
+const publico = ref('')
+const calidad = ref('')
+const estado = ref({})
+const adquisicion = ref('')
+const ubicacion = ref('')
+
+const nuevaSolicitud = ref({
+  id_estado_solicitud: null,
+  id_publicacion: null,
+  id_usuario_nuevo: null,
+})
+
+// Carga si no viene por prop
+onMounted(async () => {
+  if (!publication.value) {
+    try {
+      const res = await api.get(`/publication/${route.params.id}`)
+      publication.value = res.data
+      article.value = publication.value.article
+      user.value = publication.value.user
+    } catch (e) {
+      console.error('Error cargando publicación:', e)
+    }
+  } else {
+    article.value = publication.value.article
+  }
+    // console.log('Solicitudes:', publication.value)
+  // Cargar catálogos
+  if (publication.value) {
+    await cargarCatalogos()
+    emit('enviar-id', publication.value.id)
+  }
+})
+
+// Solicitud
+const solicitarArticulo = async () => {
+  mensaje.value = ''
+  error.value = ''
+  try {
+    nuevaSolicitud.value.id_estado_solicitud = 1
+    nuevaSolicitud.value.id_publicacion = publication.value.id
+    nuevaSolicitud.value.id_usuario_nuevo = usuarioLogueado.value.id
+    const response = await api.post('/articulo_solicitud', nuevaSolicitud.value)
+
+    if (response.status === 201) {
+      mensaje.value = response.data.message
+      setTimeout(() => (mensaje.value = ''), 2000)
+    }
+  } catch (e) {
+    if (e.response && e.response.status === 422) {
+      const errores = e.response.data.errors
+      error.value = 'Error ' + Object.values(errores).flat().join(', ')
+      setTimeout(() => {
+        mensaje.value = ''
+        error.value = ''
+      }, 2000)
+    }
+    console.error(e)
+  }
+}
+
+// Catálogos
+const cargarCatalogos = async () => {
+  try {
+    // alert('muni iD' + publication.user.id_municipio)
+    categoria.value = (await api.get(`/get_catalogo/${article.value.id_categoria_articulo}/categoria_articulo`)).data
+    publico.value = (await api.get(`/get_catalogo/${article.value.id_tipo_publico}/tipo_publico`)).data
+    calidad.value = (await api.get(`/get_catalogo/${article.value.calidad_articulo}/calidad_articulo`)).data
+    estado.value = (await api.get(`/get_catalogo/${article.value.estado_articulo}/estado_articulo`)).data
+    adquisicion.value = (await api.get(`/get_catalogo/${article.value.id_articulo_estado_adquisicion}/articulo_estado_adquisicion`)).data
+    ubicacion.value = (await api.get(`/get_catalogo/${user.value.id_municipio}/municipio`)).data
+  } catch (e) {
+    console.error('Error cargando catálogos:', e)
+  }
+}
+
+function formatFecha(fechaRaw) {
+  if (!fechaRaw) return 'Sin fecha'
+  const fechaISO = fechaRaw.replace(' ', 'T') // Convierte a formato ISO
+  const fecha = new Date(fechaISO)
+  return isNaN(fecha) ? 'Fecha no válida' : fecha.toLocaleString('es-ES')
+}
+
+
+
 </script>
 
- 
- <!-- {
+
+<!-- {
         "id": 1,
         "imagen_url": "https://wp.salesforce.com/en-us/wp-content/uploads/sites/4/2024/07/production-resource-card-ALGO-720x405-1.png",
         "id_publicacion_visibilidad": 1,
@@ -99,7 +246,8 @@
 
 
 
-    }, --> <!-- {
+    }, -->
+<!-- {
         "id": 1,
         "id_usuario": 1,
         "id_articulo": 1,

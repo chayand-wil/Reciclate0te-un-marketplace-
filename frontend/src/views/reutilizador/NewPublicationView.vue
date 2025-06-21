@@ -1,4 +1,6 @@
 <template>
+  <div class=" mb-10  flex items-center justify-center ">
+
   <div class="mt-16">
     <div
       class="mt-16 w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white"
@@ -101,7 +103,7 @@
           >
             <option value="" disabled selected>Seleccione una categoria</option>
             <option v-for="cat in catalogoCategoria" :key="cat.id" :value="cat.id">
-              {{ cat.descripcion }}
+              {{ cat.nombre }}
             </option>
           </select>
         </div>
@@ -115,7 +117,7 @@
           >
             <option value="" disabled selected>Seleccione un tipo de publico</option>
             <option v-for="cat in catalogoPublico" :key="cat.id" :value="cat.id">
-              {{ cat.tipo }}
+              {{ cat.nombre }}
             </option>
           </select>
         </div>
@@ -188,7 +190,7 @@
       </form>
     </div>
 
-    <!-- Contenedor flotante -->
+    <!-- Contenedor flotante MENSAJES -->
     <div class="fixed top-20 right-40 z-50 space-y-4 w-[300px]">
       <!-- Mensaje de éxito -->
       <div
@@ -205,6 +207,7 @@
       >
         {{ error }}
       </div>
+    </div>
     </div>
   </div>
 </template>
@@ -240,8 +243,8 @@ const id_articulo = ref(0)
 const id_user = ref(0)
 const article = ref({
   //articulo
-  nombre: 'Bicicleta',
-  descripcion: ' articulo de prueba',
+  nombre: '',
+  descripcion: '',
   detalles: 'algoooooun detalle',
   id_categoria_articulo: 1,
   id_tipo_publico: 1,
@@ -276,28 +279,7 @@ onMounted(async () => {
   }
 })
 
-const cargarCatalogos = async () => {
-  const nombreCatalogo = 'categoria_articulo' // Cambia esto al nombre del catálogo que necesitas
-  const nombreCatalogo2 = 'tipo_publico' // Cambia esto al nombre del catálogo que necesitas
-  const nombreCatalogo3 = 'calidad_articulo' // Cambia esto al nombre del catálogo que necesitas
-  const nombreCatalogo4 = 'estado_articulo' // Cambia esto al nombre del catálogo que necesitas
-  mensaje.value = ''
-  error.value = ''
-  try {
-    const res = await api.get(`/get_catalogo/${nombreCatalogo}`)
-    catalogoCategoria.value = res.data
-    const res2 = await api.get(`/get_catalogo/${nombreCatalogo2}`)
-    catalogoPublico.value = res2.data
-    const res3 = await api.get(`/get_catalogo/${nombreCatalogo3}`)
-    catalogoCalidad.value = res3.data
-    const res4 = await api.get(`/get_catalogo/${nombreCatalogo4}`)
-    catalogoEstado.value = res4.data
-  } catch (e) {
-    error.value = res.data.message
-  }
-}
-
-                                              // Crear publicacion
+// Crear publicacion
 const crearPublicacion = async () => {
   mensaje.value = ''
   error.value = ''
@@ -313,7 +295,6 @@ const crearPublicacion = async () => {
         router.push('/recicla0te.com/reutilizador/home')
       }, 2000) // 4 segundos en lugar de 1
     }
-    
   } catch (e) {
     const res = e.response
 
@@ -344,7 +325,6 @@ const crearArticulo = async () => {
 
     if (response.status === 201) {
       // Ocultar mensaje automáticamente a los 3 segundos
- 
     }
   } catch (e) {
     if (e.response && e.response.status === 422) {
@@ -352,7 +332,6 @@ const crearArticulo = async () => {
       // Unir todos los mensajes de error en una sola cadena
       error.value = ' Error ' + Object.values(errores).flat().join(', ')
       // Ocultar error automáticamente a los 5 segundos
- 
     }
 
     console.error(e)
@@ -363,6 +342,23 @@ const crearArticulo = async () => {
 
   if (id_articulo.value !== 0) {
     await crearPublicacion()
+  }
+}
+
+const cargarCatalogos = async () => {
+  mensaje.value = ''
+  error.value = ''
+  try {
+    const res = await api.get(`/get_catalogo/categoria_articulo`)
+    catalogoCategoria.value = res.data
+    const res2 = await api.get(`/get_catalogo/tipo_publico`)
+    catalogoPublico.value = res2.data
+    const res3 = await api.get(`/get_catalogo/calidad_articulo`)
+    catalogoCalidad.value = res3.data
+    const res4 = await api.get(`/get_catalogo/estado_articulo`)
+    catalogoEstado.value = res4.data
+  } catch (e) {
+    error.value = res.data.message
   }
 }
 </script>
