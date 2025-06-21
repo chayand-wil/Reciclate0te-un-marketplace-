@@ -75,7 +75,7 @@ class BaseCatalogosSeeder extends Seeder
             ['nombre' => 'En proceso de intercambio', 'slug' => 'intecambio'],
             ['nombre' => 'Intercambio completado', 'slug' => 'completado'],
         ]);
-
+        
         DB::table('publicacion_visibilidad')->insert([
             ['nombre' => 'Pendiente de aceptar', 'slug' => 'pendiente'],
             ['nombre' => 'Publica', 'slug' => 'activa'],

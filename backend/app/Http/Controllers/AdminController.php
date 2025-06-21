@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Genero;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -65,9 +66,27 @@ public function store(Request $request)
 
 public function index() //jala todos los usuarios
 {
-    // return User::all();
-    return User::select('id', 'name', 'email', 'id_rol', 'created_at')->get();
+    return User::all();
+    // return User::select('id', 'name', 'email', 'id_rol', 'created_at')->get();
 }
+
+//guardar puntos al usuario
+public function storePuntos(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:users,id',
+        'cantidad_puntos' => 'required|integer|min:0',
+    ]);
+
+    $user = User::find($request->id);
+    if (!$user) {
+        return response()->json(['message' => 'Usuario no encontrado'], 404);
+    }
+    $user->cantidad_puntos += $request->cantidad_puntos;
+    $user->save();
+
+    return response()->json(['message' => 'Puntos actualizados correctamente'], 200);
+}       
 
 
 
@@ -107,7 +126,7 @@ public function userProfile($id){
 }
 
 
-
+ 
 
 // public function getContador($id)  
 // {

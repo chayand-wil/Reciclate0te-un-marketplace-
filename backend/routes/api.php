@@ -9,7 +9,9 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\PublicationController;
 use App\Http\Controllers\PublicController;
 use App\Http\Controllers\SolicitudController;
+use App\Models\Genero;
 use App\Models\Publication;
+use App\Models\Ubicacion;
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AdminController::class, 'store']);
@@ -60,14 +62,20 @@ Route::middleware(['auth:api'])->group(function () {
         Route::post('/articulo', [ArticleController::class, 'store']);   
         Route::get('/uniqueuser/{id}', [AdminController::class, 'userProfile']);   
         Route::get('/userProfilebyPub/{id}', [AdminController::class, 'userProfilebyPub']);   
-
- 
+        
+        
     });
     
-    Route::middleware(RoleMiddleware::class . ':reutilizador')->group(function () {
-        Route::get('/reutilizador-data', function () {
-            return response()->json(['data' => 'Solo reutilizador puede ver esto']);
+    Route::middleware(RoleMiddleware::class . ':clasificador')->group(function () {
+        Route::get('/clasificador-data', function () {
+            return response()->json(['data' => 'Solo clasificador puede ver esto']);
         });
+        
+        Route::get('/generos', [Genero::class, 'getAllGeneros']);   
+        Route::get('/municipios', [Ubicacion::class, 'getAllMunicipios']);   
+        Route::get('/all_users', [AdminController::class, 'index']);   
+        Route::post('/guardar_puntos', [AdminController::class, 'storePuntos']);   
+
     });
 
 

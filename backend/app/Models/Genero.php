@@ -15,7 +15,26 @@ class Genero extends Model
         'slug',
     ];
 
-     
+     //devolver todos los géneros
+    public static function getAllGeneros()
+    {
+        return self::all();
+    }
+
+    // Definición de la relación con el modelo User
+    public function users()
+    {
+        return $this->hasMany(User::class, 'id_genero');
+    }
+
+    
+
+    // Definición de la relación con el modelo User
+    public function publicaciones()
+    {
+        return $this->hasMany(Publication::class, 'id_genero');
+    }
+    // Definición de la relación con el modelo Articulo
 
 
 

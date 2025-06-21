@@ -16,7 +16,11 @@ class Ubicacion extends Model
         'nombre',
     ]; 
 
-    
+    public static function getAllMunicipios()
+    {
+        return self::all();
+    }
+
     public function usuarios()
     {
         return $this->hasMany(User::class, 'id_municipio');
