@@ -5,13 +5,28 @@
     <div class="px-4 pt-4 flex justify-between items-center text-sm text-gray-400">
       <span>{{ publication.article.nombre }}</span>
       <p>{{ new Date(publication.created_at).toLocaleString() }}</p>
+      <button @click="modalVisible = true">
+        <svg
+          class="w-5 h-5 text-white hover:text-green-400 cursor-pointer"
+          fill="currentColor"
+          viewBox="0 0 32 32"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M29.1,20.3L19.5,4.9C18.7,3.7,17.4,3,16,3s-2.7,0.7-3.5,1.9L2.9,20.3c-1.1,1.8-1.2,3.9-0.2,5.7c1,1.8,2.9,2.9,5,2.9h16.6  
+        c2.1,0,4-1.1,5-2.9C30.3,24.2,30.2,22.1,29.1,20.3z M13.9,10.9c1-1.2,3.1-1.2,4.1,0c0.5,0.6,0.8,1.4,0.6,2.2l-0.7,5  
+        c-0.1,0.5-0.5,0.9-1,0.9h-2c-0.5,0-0.9-0.4-1-0.9l-0.7-5C13.2,12.3,13.4,11.5,13.9,10.9z M16.5,25h-1c-1.4,0-2.5-1.1-2.5-2.5  
+        s1.1-2.5,2.5-2.5h1c1.4,0,2.5,1.1,2.5,2.5S17.9,25,16.5,25z"
+          />
+        </svg>
+      </button>
     </div>
 
     <!-- Descripción -->
     <div class="px-4 py-1 text-sm text-white">
-      <p>{{ publication.description }}</p>  
+      <p>{{ publication.description }}</p>
     </div>
-    
+
     <!-- Imagen con overlay -->
     <div @click.stop="emitirDetalle" class="relative w-full group">
       <img
@@ -21,15 +36,7 @@
       />
       <div
         class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-      >
-        <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" viewBox="0 0 20 20" fill="currentColor">
-      <path d="M4 3a2 2 0 00-2 2v2h2V5h2V3H4zM14 3v2h2v2h2V5a2 2 0 00-2-2h-2zM2 14v2a2 2 0 002 2h2v-2H4v-2H2zm16 0v2h-2v2h2a2 2 0 002-2v-2h-2z" />
-    </svg> -->
-        <!-- <svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-    d="M3 7h2l2-3h10l2 3h2a2 2 0 012 2v10a2 2 0 01-2 2H3a2 2 0 01-2-2V9a2 2 0 012-2zm9 3a4 4 0 100 8 4 4 0 000-8z" />
-</svg> -->
-      </div>
+      ></div>
     </div>
 
     <!-- Estado -->
@@ -48,21 +55,31 @@
       </button>
     </div>
   </div>
+  <DenunciaModal
+    :show="modalVisible"
+    :opciones="motivos"
+    @close="modalVisible = false"
+    @cargar-Denuncia="setConfiguracion"
+  />
 </template>
 
 <script setup>
-const { publication } = defineProps(['publication'])
-const emit = defineEmits(['cargar-Publication'])
- 
-console.log('Publicación:', publication)
+import { ref } from 'vue'
+import DenunciaModal from '@/components/DenunciaModal.vue'
+const { publication } = defineProps(['publication', 'motivos'])
+
+const modalVisible = ref(false)
+const emit = defineEmits(['cargar-Publication', 'crear-Denuncia'])
+
+const id_publicacion = ref(false)
+const id_motivo = ref(false)
 
 function emitirDetalle() {
   emit('cargar-Publication', publication.id)
 }
 
-   
-// const handleImageClick = () => {
-//   alert('Imagen clickeada: ' + publication.id)
-  
-// }
+function setConfiguracion(id) {
+  modalVisible.value = false
+  emit('crear-Denuncia', publication.id, id)
+}
 </script>

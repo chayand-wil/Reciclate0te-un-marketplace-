@@ -61,15 +61,15 @@
         </div>
       </div>
 
-      <br />
+      <br /> 
       <hr />
     </div>
-    <!-- Sin resultados -->
-    <p v-if="solicitudesFiltradas.length === 0" class="text-gray-400 mt-4">
-      No hay solicitudes en este estado.
-    </p>
-
+    
   </div>
+    <!-- Sin resultados -->
+  <p v-if="solicitudesFiltradas.length === 0" class="text-center  text-gray-400 mt-4">
+    No hay solicitudes en este estado.
+  </p>
 </template>
 
 <script setup>

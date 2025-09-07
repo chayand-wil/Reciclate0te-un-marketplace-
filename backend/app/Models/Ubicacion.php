@@ -14,17 +14,20 @@ class Ubicacion extends Model
     protected $fillable = [
         'id',
         'nombre',
+        'id_departamento',
     ]; 
 
+ 
+    public function departamento()
+    {
+        return $this->belongsTo(Departamento::class, 'id_departamento', 'id');
+    }
+    // getall municipios 
     public static function getAllMunicipios()
     {
-        return self::all();
+        return self::all()->load('departamento');
     }
+  
 
-    public function usuarios()
-    {
-        return $this->hasMany(User::class, 'id_municipio');
-    }
-
-
+     
 }

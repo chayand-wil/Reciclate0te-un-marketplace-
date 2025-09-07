@@ -52,6 +52,7 @@ class PublicationController extends Controller
         return Publication::all()->load([
             'user',
             'article',
+            
         ]);
     }
 

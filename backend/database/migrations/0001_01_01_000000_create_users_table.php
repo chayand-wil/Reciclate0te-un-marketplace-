@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-// CREATE DATABASE reciclate_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+        // CREATE DATABASE reciclate_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-        
+
         Schema::create('pais', function (Blueprint $table) {
             $table->id();
             $table->string('nombre', 100);
@@ -144,14 +144,15 @@ return new class extends Migration
 
 
         // Schema::create('users', function (Blueprint $table) {
-            
-            
+
+
         //     // // Clave foránea hacia tabla roles
         //     // $table->foreign('id_rol')->references('id')->on('roles')->onDelete('cascade');
-            
+
         // });
-        
-    
+
+
+
 
 
 
@@ -164,7 +165,7 @@ return new class extends Migration
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete();
-// $table->foreignId('user_id')->nullable()->index();
+            // $table->foreignId('user_id')->nullable()->index();
             $table->string('ip_address', 45)->nullable();
             $table->text('user_agent')->nullable();
             $table->longText('payload');
@@ -172,7 +173,7 @@ return new class extends Migration
         });
 
 
- Schema::create('usuario_moderador', function (Blueprint $table) {
+        Schema::create('usuario_moderador', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->constrained('users');
         });
@@ -278,17 +279,44 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('notificacion_usuario', function (Blueprint $table) {
+        
+          Schema::create('tipo_reporte', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_usuario')->constrained('users');
-            $table->string('motivo', 255);
-            $table->text('detalle_notificacion');
+            $table->string('nombre', 50);
+            $table->string('slug', 50);
+        });
+
+
+        Schema::create('reporte_bodega', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_solicitud')->constrained('articulo_solicitud');
+            $table->foreignId('id_estado_verificado')->constrained('estado_articulo');
+            $table->foreignId('id_user_bodeguero')->constrained('users');
+            $table->foreignId('id_tipo_reporte')->constrained('tipo_reporte');
+            $table->text('observaciones_del_receptor')->nullable();
             $table->timestamps();
         });
 
-        Schema::create('denuncia_usuario', function (Blueprint $table) {
+
+        Schema::create('motivo_notificacion', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre', 50);
+            $table->string('slug', 50);
+        });
+
+        Schema::create('notificacion_usuario', function (Blueprint $table) {
             $table->id();
             $table->foreignId('id_usuario')->constrained('users');
+            $table->foreignId('id_publicacion')->constrained('publicacion');
+            $table->foreignId('id_motivo_notificacion')->constrained('motivo_notificacion');
+            $table->timestamps();
+        });
+
+
+        Schema::create('denuncia_usuario', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('id_usuario_denunciado')->constrained('users');
+            $table->foreignId('id_usuario_denunciante')->constrained('users');
             $table->foreignId('id_motivo_denuncia')->constrained('motivo_denuncia');
             $table->foreignId('id_estado_denuncia')->constrained('estado_denuncia');
             $table->timestamps();
@@ -296,13 +324,13 @@ return new class extends Migration
 
         Schema::create('denuncia_publicacion', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('id_usuario')->constrained('users');
             $table->foreignId('id_publicacion')->constrained('publicacion');
             $table->foreignId('id_motivo_denuncia')->constrained('motivo_denuncia');
             $table->foreignId('id_estado_denuncia')->constrained('estado_denuncia');
             $table->timestamps();
-        });
+        }); 
     }
- 
 
 
 
@@ -310,7 +338,8 @@ return new class extends Migration
 
 
 
-    
+
+
     /**
      * Reverse the migrations.
      */
@@ -352,8 +381,5 @@ return new class extends Migration
         Schema::dropIfExists('municipio');
         Schema::dropIfExists('departamento');
         Schema::dropIfExists('pais');
-    
-}
-
-    
+    }
 };

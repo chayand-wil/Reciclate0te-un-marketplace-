@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+
 use App\Models\EstadoSolicitud;
 use App\Models\Publication;
 use App\Models\User;
@@ -34,7 +35,7 @@ class Solicitud extends Model
 
     public function publication()
     {
-        $pub= $this->belongsTo(Publication::class, 'id_publicacion');
+        $pub = $this->belongsTo(Publication::class, 'id_publicacion');
         $pub->with(['article']);
         return $pub;
     }

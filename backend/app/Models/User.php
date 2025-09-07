@@ -105,6 +105,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Publication::class, 'id_usuario');
     }
 
+    // Relación: Un usuario puede tener muchas notificaciones
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class, 'id_usuario');
+    }
 
 
     // $rol = Rol::where('nombre', 'Ecoemprendedor')->first();

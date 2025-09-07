@@ -293,119 +293,26 @@
   </div>
 </template>
 
+
 <script setup>
-import { ref, onMounted } from 'vue'
-import api from '../../axios'
-import { useRouter } from 'vue-router'
+import { useRegistroUsuario } from '@/composables/useRegistroUsuario'
 
-const router = useRouter()
-
-const apellido = ref('')
-
-const focus_name = ref(false)
-const focus_lastname = ref(false)
-const focus_mail = ref(false)
-const focus_password = ref(false)
-const focus_dpi = ref(false)
-const focus_direccion = ref(false)
-const focus_contacto = ref(false)
-
-const municipios = ref([])
-
-const mensaje = ref('')
-const error = ref('')
-
-const departamento = 1
-
-const nuevo = ref({
-  name: '',
-  last_name: '',
-  email: '',
-  password: '',
-  dpi: '',
-  id_estado: 1,
-  id_rol: 4,
-  id_nivel: 1,
-  cantidad_puntos: 0,
-  id_municipio: 1,
-  fecha_nacimiento: '',
-  id_genero: 2,
-  detalle_direccion: '',
-  medio_contacto: '', 
-})
-
-onMounted(async () => {
-  try {
-    const res = await api.get(`/get_catalogos/municipio`) 
-    municipios.value = res.data
-  } catch (e) {
-    error.value = e.res.message
-    router.push('/')
-  }
-})
-
-const crearUsuario = async () => {
-  mensaje.value = ''
-  error.value = ''
-  try {
-    const response = await api.post('/register', nuevo.value)
-    if (response.status === 201) {
-      mensaje.value = response.data.message
-      setTimeout(() => {
-        mensaje.value = ''
-      }, 2000) // 4 segundos en lugar de 1
-      await login() // Iniciar sesion automaticamente
-    }
-  } catch (e) {
-    if (e.response && e.response.status === 422) {
-      const errores = e.response.data.errors
-      // Unir todos los mensajes de error en una sola cadena
-      error.value = ' Error ' + Object.values(errores).flat().join(', ')
-      setTimeout(() => {
-        mensaje.value = ''
-        error.value = ''
-      }, 2000) // 4 segundos en lugar de 1
-    }
-  }
-}
+const {
+  nuevo,
+  mensaje,
+  error,
+  municipios,
+  focus_name,
+  focus_lastname,
+  focus_mail,
+  focus_password,
+  focus_dpi,
+  focus_direccion,
+  focus_contacto,
+  crearUsuario,
+} = useRegistroUsuario()
 
 
 
-
-
-const login = async () => {
-  try {
-    const response = await api.post('/login', {
-      email: nuevo.value.email,
-      password: nuevo.value.password,
-    })
-
-    const token = response.data.access_token
-    const role = response.data.user.rol.slug
-
-    localStorage.setItem('token', token)
-    localStorage.setItem('role', role)
-
-    switch (role) {
-      case 'admin':
-        router.push('/admin')
-        break
-      case 'bodeguero':
-        router.push('/bodeguero')
-        break
-      case 'reutilizador':
-        router.push('/reutilizador')
-        break
-      case 'clasificador':
-        alert('Clasificador')
-        router.push('/clasificador')
-        break
-      default:
-        router.push('/')
-    }
-  } catch (err) {
-    // error.value =  err.response.data.message
-    error.value = 'Credenciales incorrectas'
-  }
-}
 </script>
+

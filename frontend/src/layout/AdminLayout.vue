@@ -2,7 +2,6 @@
   <div class="layout">
     <AppHeader />
     <div class="main">
-      <AppSidebar />
       <div class="content">
         <router-view />
       </div>
@@ -11,10 +10,8 @@
 </template>
 
 <script setup>
-import AppHeader from '../components/AppHeader.vue'
-import AppSidebar from '../components/AppSidebar.vue'
+import AppHeader from '../components/admin/AppHeader.vue'
 </script>
-
 
 <style scoped>
 .layout {
@@ -23,7 +20,6 @@ import AppSidebar from '../components/AppSidebar.vue'
   height: 100vh;
   width: 100%; /* no uses 100vw */
   overflow: hidden;
-   
 }
 
 .main {
@@ -40,10 +36,6 @@ import AppSidebar from '../components/AppSidebar.vue'
   height: 100%;
   width: 100%;
   overflow: auto;
-  color: white; 
+  color: white;
 }
-
-
-
-
 </style>

@@ -2,7 +2,7 @@
   <header
     class="w-full backdrop-blur-lg bg-white/10 text-white fixed top-0 z-50 border-b border-white/10"
   >
-    <div class="flex items-center justify-between px-4 sm:px-6 lg:px-8 h-16">
+    <div class="flex items-center text-xl justify-between px-4 sm:px-6 lg:px-8 h-16">
       <!-- Logo -->
       <div class="flex items-center space-x-1 ml-4 sm:ml-8 lg:ml-16">
         <!-- <img src="" alt="Logo" class="w-6 h-6" /> -->
@@ -66,7 +66,7 @@
           <router-link to="/recicla0te.com/reutilizador/mi_cuenta">Mi Cuenta</router-link>
         </div>
 
-        <button aria-label="Apps" class="hover:opacity-90">
+        <!-- <button aria-label="Apps" class="hover:opacity-90">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="currentColor"
@@ -83,7 +83,8 @@
             <circle cx="12" cy="19" r="2" />
             <circle cx="19" cy="19" r="2" />
           </svg>
-        </button>
+        </button> -->
+        <Notifications />
         <UserDropdown />
       </div>
     </div>
@@ -93,6 +94,7 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import UserDropdown from '../UserDropdown.vue'
+import Notifications from '../Notifications.vue'
 import router from '@/router'
 
 const isOpen = ref(false)

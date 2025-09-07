@@ -38,7 +38,7 @@ class Publication extends Model
                 return $this->belongsTo(User::class, 'id_usuario');
         }
 
-        
+
         // Una publicación pertenece a un artículo
         public function article()
         {
@@ -66,4 +66,6 @@ class Publication extends Model
                 //por lo tanto, retorna el objeto Publicacion_visibilidad
                 return $this->belongsTo(Publicacion_visibilidad::class, 'id_publicacion_visibilidad');
         }
+        // Una publicación puede tener muchas notificaciones
+        
 }

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Genero;
 use App\Models\User;
+use App\Models\MotivoNotificacion;
+use App\Models\Publication;
+use App\Models\Notification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -70,6 +73,7 @@ public function index() //jala todos los usuarios
     // return User::select('id', 'name', 'email', 'id_rol', 'created_at')->get();
 }
 
+
 //guardar puntos al usuario
 public function storePuntos(Request $request)
 {
@@ -125,8 +129,35 @@ public function userProfile($id){
     return response()->json($user);
 }
 
+// noficaciones de un usuario
+public function getNotifications($id)
+{
+    //todas las notificaciones del usuario
+    // ordenadas por fecha de creacion
+    $user =Notification::with([
+        'motivoNotificacion',
+        'user',
+        'publication',
+        'publication.article',
+    ])->where('id_usuario', $id)->orderBy('created_at', 'desc')->get();
+    if (!$user) {
+        return response()->json(['message' => 'Usuario no encontrado'], 404);
+    }
 
- 
+    return response()->json($user);
+}
+
+
+//todos los usuarios incluyendo todos sus campos
+ public function getUserAllFields(){
+    return User::with([
+        'estado',
+        'rol',
+        'nivel',
+        'municipio'
+    ])->get();
+ }
+
 
 // public function getContador($id)  
 // {

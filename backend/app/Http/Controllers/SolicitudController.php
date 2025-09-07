@@ -101,6 +101,51 @@ class SolicitudController extends Controller
     }
 
 
+    //solicitud aceptada con su estado, publicacion y usuario nuevo
+    public function getSolicitudeAceptada($id)
+    {
+        try {
+            $solicitud = Solicitud::where('id', $id)
+                ->with(['publication', 'user', 'estadoSolicitud'])
+                ->first();
+
+            if (!$solicitud) {
+                return response()->json([
+                    'message' => 'Solicitud no encontrada',
+                ], 404);
+            }
+
+            return response()->json($solicitud);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al obtener solicitud',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+    
+    public function getSolicitudesAceptadas()
+    {
+        try {
+            $solicitudes = Solicitud::whereHas('estadoSolicitud', function ($query) {
+                $query->where('nombre', 'aceptada');
+            })->with(['publication', 'user', 'estadoSolicitud'])->get();
+
+            return response()->json($solicitudes);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al obtener solicitudes',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+
+
+ 
+
     public function updateSolicitud(Request $request, $id)
     {
         $solicitud = Solicitud::findOrFail($id);
@@ -118,5 +163,28 @@ class SolicitudController extends Controller
         $solicitud->save();
 
         return response()->json(['message' => 'Solicitud actualizada exitosamente']);
+    }
+
+
+    //solicitud aceptadas de un usuario y que tengan el articulo articulo_estado_adquisicion = 2
+    public function getSolicitudesCompletadas($id_user)
+    {
+        try {
+            $solicitudes = Solicitud::where('id_usuario_nuevo', $id_user)
+                ->whereHas('estadoSolicitud', function ($query) {
+                    $query->where('nombre', 'aceptada');
+                })
+                ->whereHas('publication.article', function ($query) {
+                    $query->where('id_articulo_estado_adquisicion', 5); // Estado de adquisición completado
+                })
+                ->with(['publication', 'user', 'estadoSolicitud'])
+                ->get();
+            return response()->json($solicitudes);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al obtener solicitudes aceptadas',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

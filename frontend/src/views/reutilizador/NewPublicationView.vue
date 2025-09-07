@@ -1,90 +1,89 @@
 <template>
-  <div class=" mb-10  flex items-center justify-center ">
+  <div class="mb-10 flex items-center justify-center">
+    <div class="mt-16">
+      <div
+        class="mt-16 w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white"
+      >
+        <p class="text-xm text-center text-gray-400">Crear publicacion</p>
+        <br />
 
-  <div class="mt-16">
-    <div
-      class="mt-16 w-full max-w-2xl bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-white"
-    >
-      <p class="text-xm text-center text-gray-400">Crear publicacion</p>
-      <br />
+        <form @submit.prevent="crearArticulo">
+          <div class="flex space-x-4 w-full">
+            <div class="relative">
+              <input
+                v-model="article.nombre"
+                @focus="focus_name = true"
+                @blur="focus_name = false"
+                type="text"
+                id="nombre"
+                placeholder=""
+                required
+                class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+              />
+              <label
+                :class="[
+                  'absolute left-6 transition-all',
+                  focus_name || article.nombre
+                    ? 'top-0.5 text-base text-xs text-blue-500'
+                    : 'top-4 text-lg text-gray-500',
+                ]"
+                for="nombre"
+              >
+                Nombre articulo
+              </label>
+            </div>
 
-      <form @submit.prevent="crearArticulo">
-        <div class="flex space-x-4 w-full">
-          <div class="relative">
-            <input
-              v-model="article.nombre"
-              @focus="focus_name = true"
-              @blur="focus_name = false"
-              type="text"
-              id="nombre"
-              placeholder=""
-              required
-              class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
-            />
-            <label
-              :class="[
-                'absolute left-6 transition-all',
-                focus_name || article.nombre
-                  ? 'top-0.5 text-base text-xs text-blue-500'
-                  : 'top-4 text-lg text-gray-500',
-              ]"
-              for="nombre"
-            >
-              Nombre articulo
-            </label>
+            <div class="relative">
+              <input
+                v-model="article.descripcion"
+                @focus="focus_descripcion = true"
+                @blur="focus_descripcion = false"
+                type="text"
+                id="descripcion"
+                placeholder=" "
+                class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+              />
+              <label
+                :class="[
+                  'absolute left-6 transition-all',
+                  focus_descripcion || article.descripcion
+                    ? 'top-0.5 text-base text-xs text-blue-500'
+                    : 'top-4 text-lg text-gray-500',
+                ]"
+                for="descripcion"
+              >
+                Descripcion corta
+              </label>
+            </div>
           </div>
 
-          <div class="relative">
-            <input
-              v-model="article.descripcion"
-              @focus="focus_descripcion = true"
-              @blur="focus_descripcion = false"
+          <div class="relative mt-4 w-full mt-1">
+            <textarea
+              v-model="article.detalles"
+              @focus="focus_detalles = true"
+              @blur="focus_detalles = false"
               type="text"
-              id="descripcion"
+              id="detalles"
               placeholder=" "
-              class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
-            />
+              required
+              class="peer w-full h-36 px-6 py-4 rounded-md bg-neutral-800 text-white text-xm placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+            >
+            </textarea>
+
             <label
               :class="[
                 'absolute left-6 transition-all',
-                focus_descripcion || article.descripcion
+                focus_detalles || article.detalles
                   ? 'top-0.5 text-base text-xs text-blue-500'
-                  : 'top-4 text-lg text-gray-500',
+                  : 'top-4 text-xl text-gray-500',
               ]"
-              for="descripcion"
+              for="detalles"
             >
-              Descripcion corta
+              Detalles - recomendaciones
             </label>
           </div>
-        </div>
 
-        <div class="relative mt-4 w-full mt-1">
-          <textarea
-            v-model="article.detalles"
-            @focus="focus_detalles = true"
-            @blur="focus_detalles = false"
-            type="text"
-            id="detalles"
-            placeholder=" "
-            required
-            class="peer w-full h-36 px-6 py-4 rounded-md bg-neutral-800 text-white text-xm placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
-          >
-          </textarea>
-
-          <label
-            :class="[
-              'absolute left-6 transition-all',
-              focus_detalles || article.detalles
-                ? 'top-0.5 text-base text-xs text-blue-500'
-                : 'top-4 text-xl text-gray-500',
-            ]"
-            for="detalles"
-          >
-            Detalles - recomendaciones
-          </label>
-        </div>
-
-        <!-- <div>
+          <!-- <div>
       <label>Tipo de público:</label>
       <select v-model="form.id_tipo_publico" required>
         <option disabled value="">Seleccione un tipo</option>
@@ -94,120 +93,120 @@
       </select>
     </div> -->
 
-        <div class="mt-4">
-          <label for="id_categoria_articulo" class="block text-gray-400 mb-1">Categoria</label>
-          <select
-            id="id_categoria_articulo"
-            v-model="article.id_categoria_articulo"
-            class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
-          >
-            <option value="" disabled selected>Seleccione una categoria</option>
-            <option v-for="cat in catalogoCategoria" :key="cat.id" :value="cat.id">
-              {{ cat.nombre }}
-            </option>
-          </select>
-        </div>
+          <div class="mt-4">
+            <label for="id_categoria_articulo" class="block text-gray-400 mb-1">Categoria</label>
+            <select
+              id="id_categoria_articulo"
+              v-model="article.id_categoria_articulo"
+              class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+            >
+              <option value="" disabled selected>Seleccione una categoria</option>
+              <option v-for="cat in catalogoCategoria" :key="cat.id" :value="cat.id">
+                {{ cat.nombre }}
+              </option>
+            </select>
+          </div>
 
-        <div class="mt-4">
-          <label for="id_tipo_publico" class="block text-gray-400 mb-1">Tipo publico</label>
-          <select
-            id="id_tipo_publico"
-            v-model="article.id_tipo_publico"
-            class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
-          >
-            <option value="" disabled selected>Seleccione un tipo de publico</option>
-            <option v-for="cat in catalogoPublico" :key="cat.id" :value="cat.id">
-              {{ cat.nombre }}
-            </option>
-          </select>
-        </div>
+          <div class="mt-4">
+            <label for="id_tipo_publico" class="block text-gray-400 mb-1">Tipo publico</label>
+            <select
+              id="id_tipo_publico"
+              v-model="article.id_tipo_publico"
+              class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+            >
+              <option value="" disabled selected>Seleccione un tipo de publico</option>
+              <option v-for="cat in catalogoPublico" :key="cat.id" :value="cat.id">
+                {{ cat.nombre }}
+              </option>
+            </select>
+          </div>
 
-        <div class="mt-4">
-          <label for="calidad_articulo" class="block text-gray-400 mb-1"
-            >Calidad (Materiales de alta durabilidad / marcas reconocidas, etc. )</label
-          >
-          <select
-            id="calidad_articulo"
-            v-model="article.calidad_articulo"
-            class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
-          >
-            <option value="" disabled selected>Seleccione una calidad</option>
-            <option v-for="cat in catalogoCalidad" :key="cat.id" :value="cat.id">
-              {{ cat.slug }}
-            </option>
-          </select>
-        </div>
+          <div class="mt-4">
+            <label for="calidad_articulo" class="block text-gray-400 mb-1"
+              >Calidad (Materiales de alta durabilidad / marcas reconocidas, etc. )</label
+            >
+            <select
+              id="calidad_articulo"
+              v-model="article.calidad_articulo"
+              class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+            >
+              <option value="" disabled selected>Seleccione una calidad</option>
+              <option v-for="cat in catalogoCalidad" :key="cat.id" :value="cat.id">
+                {{ cat.slug }}
+              </option>
+            </select>
+          </div>
 
-        <div class="mt-4">
-          <label for="estado_articulo" class="block text-gray-400 mb-1"
-            >Estado actual del articulo (Aun se le puede dar una segunda vida?)</label
-          >
-          <select
-            id="estado_articulo"
-            v-model="article.estado_articulo"
-            class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
-          >
-            <option value="" disabled selected>Seleccione un estado</option>
-            <option v-for="cat in catalogoEstado" :key="cat.id" :value="cat.id">
-              {{ cat.slug }}
-            </option>
-          </select>
-        </div>
+          <div class="mt-4">
+            <label for="estado_articulo" class="block text-gray-400 mb-1"
+              >Estado actual del articulo (Aun se le puede dar una segunda vida?)</label
+            >
+            <select
+              id="estado_articulo"
+              v-model="article.estado_articulo"
+              class="w-full bg-neutral-800 text-white px-4 py-3 rounded-md focus:outline-none focus:ring-2 focus:ring-green-200"
+            >
+              <option value="" disabled selected>Seleccione un estado</option>
+              <option v-for="cat in catalogoEstado" :key="cat.id" :value="cat.id">
+                {{ cat.slug }}
+              </option>
+            </select>
+          </div>
 
-        <label for=""></label>
-        <div class="flex w-full relative">
-          <input
-            v-model="pub.imagen_url"
-            @focus="focus_imagen_url = true"
-            @blur="focus_imagen_url = false"
-            type="text"
-            id="imagen_url"
-            placeholder=""
-            required
-            class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
-          />
-          <label
-            :class="[
-              'absolute left-6 transition-all',
-              focus_imagen_url || pub.imagen_url
-                ? 'top-0.5 text-base text-xs text-blue-500'
-                : 'top-4 text-lg text-gray-500',
-            ]"
-            for="imagen_url"
-          >
-            Enlace de imagen
-          </label>
-        </div>
+          <label for=""></label>
+          <div class="flex w-full relative">
+            <input
+              v-model="pub.imagen_url"
+              @focus="focus_imagen_url = true"
+              @blur="focus_imagen_url = false"
+              type="text"
+              id="imagen_url"
+              placeholder=""
+              required
+              class="peer w-full h-14 px-6 rounded-md bg-neutral-800 text-white text-xl placeholder-transparent focus:outline-none focus:ring-2 focus:ring-green-200"
+            />
+            <label
+              :class="[
+                'absolute left-6 transition-all',
+                focus_imagen_url || pub.imagen_url
+                  ? 'top-0.5 text-base text-xs text-blue-500'
+                  : 'top-4 text-lg text-gray-500',
+              ]"
+              for="imagen_url"
+            >
+              Enlace de imagen
+            </label>
+          </div>
 
-        <div class="w-full flex justify-between mt-6">
-          <button
-            type="submit"
-            class="block mx-auto w-2/4 text-center text-green-400 border border-green-400 px-4 py-2 rounded-md hover:bg-green-400 hover:text-white transition"
-          >
-            Publicar ahora!
-          </button>
-        </div>
-      </form>
-    </div>
-
-    <!-- Contenedor flotante MENSAJES -->
-    <div class="fixed top-20 right-40 z-50 space-y-4 w-[300px]">
-      <!-- Mensaje de éxito -->
-      <div
-        v-if="mensaje"
-        class="bg-white/20 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-xl text-verdee"
-      >
-        {{ mensaje }}
+          <div class="w-full flex justify-between mt-6">
+            <button
+              type="submit"
+              class="block mx-auto w-2/4 text-center text-green-400 border border-green-400 px-4 py-2 rounded-md hover:bg-green-400 hover:text-white transition"
+            >
+              Publicar ahora!
+            </button>
+          </div>
+        </form>
       </div>
 
-      <!-- Mensaje de error de validación -->
-      <div
-        v-if="error"
-        class="bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-xl text-red-600"
-      >
-        {{ error }}
+      <!-- Contenedor flotante MENSAJES -->
+      <div class="fixed top-20 right-40 z-50 space-y-4 w-[300px]">
+        <!-- Mensaje de éxito -->
+        <div
+          v-if="mensaje"
+          class="bg-white/20 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-xl text-verdee"
+        >
+          {{ mensaje }}
+        </div>
+
+        <!-- Mensaje de error de validación -->
+        <div
+          v-if="error"
+          class="bg-white/10 backdrop-blur-sm rounded-2xl p-10 shadow-lg text-xl text-red-600"
+        >
+          {{ error }}
+        </div>
       </div>
-    </div>
     </div>
   </div>
 </template>
